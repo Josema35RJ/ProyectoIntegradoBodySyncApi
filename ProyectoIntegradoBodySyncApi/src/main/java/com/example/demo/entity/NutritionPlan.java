@@ -1,6 +1,13 @@
 package com.example.demo.entity;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,15 +21,15 @@ import lombok.Data;
 
 //La clase NutritionPlan representa un plan de nutrición personalizado para un usuario.
 @Entity
-@Table(name = "nutrition_plan")
 @Data
+@Table(name = "nutrition_plan")
 public class NutritionPlan {
 	// Identificador único para cada plan de nutrición.
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	// Usuario al que pertenece el plan de nutrición.
+	// Usuario que ha hecho el registro de entrenamiento.
 	@ManyToOne
 	@NotNull(message = "GymUser is required")
 	private GymUser gymUser;

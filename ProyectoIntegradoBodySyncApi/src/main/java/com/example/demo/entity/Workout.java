@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotEmpty;
@@ -21,17 +22,17 @@ import lombok.Data;
 //La clase Workout representa un entrenamiento realizado por un usuario.
 
 @Entity
-@Table(name = "workout")
 @Data
+@Table(name = "workout")
 public class Workout {
 	// Identificador único para cada entrenamiento.
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	// Identificador del usuario que ha realizado el entrenamiento.
+	@ManyToOne
 	@NotNull(message = "User is required")
-	private int user;
+	private GymUser gymUser;
 
 	// Fecha y hora del entrenamiento.
 	@NotNull(message = "Date and time are required")

@@ -1,20 +1,15 @@
-package com.example.demo.entity;
+package com.example.demo.model;
 
-import jakarta.persistence.Entity;
+import com.example.demo.entity.GymUser;
+
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
 
-//La clase Exercise representa un ejercicio que puede ser realizado en el gimnasio.
-@Entity
-@Table(name = "exercise")
-@Data
-public class Exercise {
+public class ExerciseModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
@@ -30,6 +25,5 @@ public class Exercise {
 
 	@NotBlank(message = "Necessary equipment is required")
 	private String necessaryEquipment;
-
 
 }

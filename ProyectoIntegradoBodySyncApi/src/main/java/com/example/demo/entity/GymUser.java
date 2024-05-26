@@ -31,16 +31,14 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 //La clase GymUser representa a un usuario del gimnasio.
-@Data
 @Entity
+@Data
 @Table(name = "gym_user")
 public class GymUser {
 	// Identificador único para cada usuario.
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
-
-	// Foto del Usuario.
 
 	// Nombre del usuario.
 	@Column(name = "first_name", nullable = false)

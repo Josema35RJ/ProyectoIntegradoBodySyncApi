@@ -174,8 +174,6 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 	public GymUser registrar(GymUser gymUser) {
 		// TODO Auto-generated method stub
 		gymUser.setPassword(passwordEncoder().encode(gymUser.getPassword()));
-		
-			
 		return gymUserRepository.save(gymUser);
 	}
 
