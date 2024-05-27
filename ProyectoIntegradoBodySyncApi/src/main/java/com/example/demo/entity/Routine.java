@@ -29,6 +29,10 @@ public class Routine {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
+	// Usuario que ha hecho el registro de entrenamiento.
+	@ManyToOne
+	@NotNull(message = "GymUser is required")
+	private GymUser gymUser;
 
 	// Lista de ejercicios que componen la rutina.
 	@NotEmpty(message = "Exercise list cannot be empty")

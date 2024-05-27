@@ -168,15 +168,15 @@ public class GymUser {
 	private LocalDateTime updatedDate;
 
 	// Lista de rutinas del usuario.
-	@OneToMany(mappedBy = "gymUser")
+	@OneToMany()
 	private List<Routine> routines;
 
 	// Lista de ejercicios del usuario.
-	@OneToMany(mappedBy = "gymUser")
+	@OneToMany()
 	private List<Exercise> exercises;
 
 	// Lista de planes de nutrición del usuario.
-	@OneToMany(mappedBy = "gymUser")
+	@OneToMany()
 	private List<NutritionPlan> nutritionPlans;
 
 	// Lista de logros del usuario.
@@ -184,15 +184,15 @@ public class GymUser {
 	private List<Achievement> achievements;
 
 	// Lista de reservas de clases del usuario.
-	@OneToMany(mappedBy = "gymUser")
+	@OneToMany()
 	private List<ClassReservation> classReservations;
 
 	// Lista de registros de entrenamiento del usuario.
-	@OneToMany(mappedBy = "gymUser")
+	@OneToMany()
 	private List<WorkoutLog> workoutLogs;
 
 	// Lista de registros de comidas del usuario.
-	@OneToMany(mappedBy = "gymUser")
+	@OneToMany()
 	private List<MealLog> mealLogs;
 
 	// Lista de registros de dolor muscular del usuario.

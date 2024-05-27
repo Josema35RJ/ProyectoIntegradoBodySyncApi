@@ -20,6 +20,7 @@ import com.example.demo.entity.NutritionPlan;
 import com.example.demo.entity.Routine;
 import com.example.demo.entity.UserInjury;
 import com.example.demo.entity.Workout;
+import com.example.demo.model.GymUserModel;
 import com.example.demo.service.GymClassService;
 import com.example.demo.service.GymUserService;
 import com.example.demo.service.NutritionPlanService;
@@ -53,6 +54,29 @@ public class RestApiController {
 	@Autowired
 	@Qualifier("userInjuryService")
 	private UserInjuryService userInjuryService;
+	
+	@GetMapping("/apiGymUser/getGymUser/{id}")
+	public ResponseEntity<?> GymUser(@PathVariable int id, Principal principal) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			// Comprobar si el usuario autenticado es el mismo que el idAlumno
+			if (!principal.getName().equals(gymUserService.getGymUserById(id).getUsername())) {
+				response.put("success", false);
+				response.put("message", "No tienes permiso para ver este Usuario");
+				return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+			}
+			GymUserModel gymUser = gymUserService.getGymUserById(id);// Obtener los servicios de la
+
+			response.put("success", true);
+			response.put("data", gymUser);
+			response.put("message", "Clases obtenidas con exito");
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("success", false);
+			response.put("message", e);
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 	
 	@GetMapping("/apiGymUser/getClases/{id}")
 	public ResponseEntity<?> ListClasesGymUser(@PathVariable int id, Principal principal) {
