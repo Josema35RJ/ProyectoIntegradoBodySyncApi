@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import com.example.demo.converter.GymUserConverter;
 import com.example.demo.converter.UserInjuryConverter;
 import com.example.demo.entity.UserInjury;
 import com.example.demo.model.GymUserModel;
+import com.example.demo.model.UserInjuryModel;
 import com.example.demo.repository.UserInjuryRepository;
 import com.example.demo.service.UserInjuryService;
 
@@ -29,15 +31,19 @@ public class UserInjuryServiceImpl implements UserInjuryService{
 	private GymUserConverter gymUserConverter;
 
 	@Override
-	public UserInjury findByGymUser(GymUserModel gymUserModel) {
+	public UserInjuryModel findByGymUser(GymUserModel gymUserModel) {
 		// TODO Auto-generated method stub
-		return userInjuryRepository.findByGymUser(gymUserConverter.transform(gymUserModel));
+		return userInjuryConverter.transform(userInjuryRepository.findByGymUser(gymUserConverter.transform(gymUserModel)));
 	}
 
 	@Override
-	public List<UserInjury> ListUserInjury() {
+	public List<UserInjuryModel> ListUserInjury() {
 		// TODO Auto-generated method stub
-		return userInjuryRepository.findAll();
+		List<UserInjuryModel> l = new ArrayList<>();
+		for(UserInjury u : userInjuryRepository.findAll()) {
+			l.add(userInjuryConverter.transform(u));
+		}
+		return l;
 	}
 
 	

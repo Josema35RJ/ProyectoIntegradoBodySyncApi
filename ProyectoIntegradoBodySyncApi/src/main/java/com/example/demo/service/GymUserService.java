@@ -17,15 +17,15 @@ public interface GymUserService {
 	 public int calculateAge(Date birthDate);
 	 public float calculateBMI(GymUserModel user);
 	 public LocalDate convertToLocalDateViaInstant(Date dateToConvert);
-	   public GymUser registrar(GymUser gymUser);
+	   public void registrar(GymUserModel gymUser);
 	   public boolean existeUsername(String email);
 	   public boolean activarDesactivar(int gymUserId);
 	   public boolean eliminarGymUser(int id);
 	   public GymUserModel getGymUserById(int id);
-	   GymUser updateUser (GymUserModel gymUserModel);
+	   GymUserModel updateUser (GymUserModel gymUserModel);
 	   List<String> getEmails();
-	   List<GymUser> ListGymUsersByClassId(int classId);
-	GymUser findGymUserByUsernameAndPassword(String username, String password);
-	Set<GymClass> enrolledClassesfindbyGymUserModel(Integer id);
+	   List<GymUserModel> ListGymUsersByClassId(int classId);
+	GymUserModel findGymUserByUsernameAndPassword(String username, String password);
+	Set<GymClassModel> enrolledClassesfindbyGymUserModel(Integer id);
 
 }

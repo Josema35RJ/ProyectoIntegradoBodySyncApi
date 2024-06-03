@@ -20,7 +20,7 @@ public class AchievementModel {
 		// Usuario que ha conseguido el logro.
 		@ManyToOne
 		@NotNull(message = "GymUser is required")
-		private GymUser gymUser;
+		private GymUserModel gymUser;
 
 		// Nombre del logro.
 		@NotBlank(message = "Name is required")
@@ -32,4 +32,50 @@ public class AchievementModel {
 
 		// Fecha en la que se consiguió el logro.
 		private LocalDateTime achievedAt;
+
+		public Integer getId() {
+			return id;
+		}
+
+		public void setId(Integer id) {
+			this.id = id;
+		}
+
+		public @NotNull(message = "GymUser is required") GymUserModel getGymUser() {
+			return gymUser;
+		}
+
+		public void setGymUser(GymUserModel gymUserModel) {
+			this.gymUser = gymUserModel;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+
+		public void setDescription(String description) {
+			this.description = description;
+		}
+
+		public LocalDateTime getAchievedAt() {
+			return achievedAt;
+		}
+
+		public void setAchievedAt(LocalDateTime achievedAt) {
+			this.achievedAt = achievedAt;
+		}
+
+		@Override
+		public String toString() {
+			return "AchievementModel [id=" + id + ", gymUser=" + gymUser + ", name=" + name + ", description="
+					+ description + ", achievedAt=" + achievedAt + "]";
+		}
 }

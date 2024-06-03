@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,9 +23,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.converter.GymClassConverter;
 import com.example.demo.converter.GymUserConverter;
 import com.example.demo.entity.GymClass;
 import com.example.demo.entity.GymUser;
+import com.example.demo.model.GymClassModel;
 import com.example.demo.model.GymUserModel;
 import com.example.demo.repository.GymUserRepository;
 import com.example.demo.security.CustomUserDetails;
@@ -40,6 +43,10 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 	@Autowired
 	@Qualifier("gymUserConverter")
 	private GymUserConverter gymUserConverter;
+	
+	@Autowired
+	@Qualifier("gymClassConverter")
+	private GymClassConverter gymClassConverter;
 	
 	@Bean
 	PasswordEncoder passwordEncoder() {
@@ -153,11 +160,11 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 		return gymUserConverter.transform(gymUser);
 	}
 	@Override
-	public GymUser updateUser(GymUserModel gymUserModel) {
+	public GymUserModel updateUser(GymUserModel gymUserModel) {
 		// TODO Auto-generated method stub
-		GymUser gymUser = gymUserConverter.transform(gymUserModel);
-		gymUserRepository.save(gymUser);
-		return gymUser;
+	 
+		gymUserRepository.save(gymUserConverter.transform(gymUserModel));
+		return gymUserModel;
 	}
 	
 	@Override
@@ -171,20 +178,25 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 	}
 	
 	@Override
-	public GymUser registrar(GymUser gymUser) {
+	public void registrar(GymUserModel gymUser) {
 		// TODO Auto-generated method stub
 		gymUser.setPassword(passwordEncoder().encode(gymUser.getPassword()));
-		return gymUserRepository.save(gymUser);
+		gymUserRepository.save(gymUserConverter.transform(gymUser));
+		
 	}
 
-	public List<GymUser> ListGymUsersByClassId(int classId) {
-        return gymUserRepository.findByEnrolledClasses_Id(classId);
+	public List<GymUserModel> ListGymUsersByClassId(int classId) {
+		List<GymUserModel> l = new ArrayList <>();
+		for(GymUser g : gymUserRepository.findByEnrolledClasses_Id(classId)) {
+			l.add(gymUserConverter.transform(g));
+		}
+        return l;
     }
 
 	@Override
-	public GymUser findGymUserByUsernameAndPassword(String username, String password) {
+	public GymUserModel findGymUserByUsernameAndPassword(String username, String password) {
 		// TODO Auto-generated method stub
-		   GymUser gymUser = gymUserRepository.findByUsername(username);
+		   GymUserModel gymUser = gymUserConverter.transform(gymUserRepository.findByUsername(username));
 		    
 		    // Verificar si el usuario existe
 		    if (gymUser == null) {
@@ -211,9 +223,13 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 	}
 
 	@Override
-	public Set<GymClass> enrolledClassesfindbyGymUserModel(Integer id) {
+	public Set<GymClassModel> enrolledClassesfindbyGymUserModel(Integer id) {
 		// TODO Auto-generated method stub
-		return gymUserRepository.findEnrolledClassesById(id);
+		Set<GymClassModel> l = new HashSet<>();
+		for(GymClass g : gymUserRepository.findEnrolledClassesById(id)) {
+			l.add(gymClassConverter.transform(g));
+		}
+		return l;
 	}
 
 

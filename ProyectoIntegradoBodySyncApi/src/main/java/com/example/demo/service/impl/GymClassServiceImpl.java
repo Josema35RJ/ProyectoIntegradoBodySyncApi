@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.converter.GymClassConverter;
 import com.example.demo.entity.GymClass;
 import com.example.demo.entity.GymUser;
+import com.example.demo.model.GymClassModel;
 import com.example.demo.model.GymUserModel;
 import com.example.demo.repository.GymClassRepository;
 import com.example.demo.repository.InstructorRepository;
@@ -25,21 +28,27 @@ public class GymClassServiceImpl implements GymClassService {
     @Qualifier("instructorRepository")
     private InstructorRepository instructorRepository;
     
- 
+    @Autowired
+    @Qualifier("gymClassConverter")
+    private GymClassConverter gymClassConverter;
 
     @Override
-    public List<GymClass> getAllClasses() {
-        return gymClassRepository.findAll();
+    public List<GymClassModel> getAllClasses() {
+    	List<GymClassModel> l = new ArrayList<>();
+    	for(GymClass g : gymClassRepository.findAll()) {
+    		l.add(gymClassConverter.transform(g));
+    	}
+        return l;
     }
 
     @Override
-    public GymClass getClassById(int id) {
-        return gymClassRepository.findById(id).orElse(null);
+    public GymClassModel getClassById(int id) {
+        return gymClassConverter.transform(gymClassRepository.findById(id).orElse(null));
     }
 
     @Override
-    public void addClass(GymClass gymClass) {
-        gymClassRepository.save(gymClass);
+    public void addClass(GymClassModel gymClass) {
+        gymClassRepository.save(gymClassConverter.transform(gymClass));
     }
 
     public void updateClass(GymClass gymClass) {
@@ -74,18 +83,26 @@ public class GymClassServiceImpl implements GymClassService {
         gymClassRepository.save(gymClass);
     }
     
-    public List<GymClass> obtenerDatosAsistencia() {
+    public List<GymClassModel> obtenerDatosAsistencia() {
         // Obtener todas las clases y filtrar por las que están en curso
-        return gymClassRepository.findAll().stream()
+    	List<GymClassModel> l = new ArrayList<>();
+    	for(GymClass g : gymClassRepository.findAll().stream()
                 .filter(gymClass -> "ongoing".equals(gymClass.getStatus()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())) {
+    		l.add(gymClassConverter.transform(g));
+    	}
+        return l;
     }
 
-    public List<GymClass> obtenerDatosPopularidad() {
+    public List<GymClassModel> obtenerDatosPopularidad() {
         // Obtener todas las clases y ordenarlas por la tasa de ocupación
-        return gymClassRepository.findAll().stream()
+    	List<GymClassModel> l = new ArrayList<>();
+    	for(GymClass g : gymClassRepository.findAll().stream()
                 .sorted((c1, c2) -> Double.compare(c2.getOccupancyRate(), c1.getOccupancyRate()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList())) {
+    		l.add(gymClassConverter.transform(g));
+    	}
+        return l;
     }
   
     @Override
@@ -94,8 +111,18 @@ public class GymClassServiceImpl implements GymClassService {
     }
 
 	@Override
-	public List<GymClass> getAllClassesFinByInstructorId(GymUserModel instructor) {
+	public List<GymClassModel> getAllClassesFinByInstructorId(GymUserModel instructor) {
 		// TODO Auto-generated method stub
-		return gymClassRepository.findByInstructorId(instructor.getId());
+		List<GymClassModel> l = new ArrayList<>();
+    	for(GymClass g : gymClassRepository.findByInstructorId(instructor.getId())) {
+    		l.add(gymClassConverter.transform(g));
+    	}
+		return l;
+	}
+
+	@Override
+	public void updateClass(GymClassModel gymClass) {
+		// TODO Auto-generated method stub
+		gymClassRepository.save(gymClassConverter.transform(gymClass));
 	}
 }

@@ -59,7 +59,7 @@ public class GymClassModel {
 
     @ManyToOne
     @JoinColumn(name="instructor_id", nullable=false)
-    private GymUser instructor;
+    private GymUserModel instructor;
     
     private boolean active = true; // Nuevo campo
 
@@ -69,7 +69,113 @@ public class GymClassModel {
     @ElementCollection
     private Set<Integer> reservationIds = new HashSet<>();
 
-    public boolean addReservation(int userId) {
+    
+    
+    public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public LocalDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(LocalDate startDate) {
+		this.startDate = startDate;
+	}
+
+	public LocalDate getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(LocalDate endDate) {
+		this.endDate = endDate;
+	}
+
+	public Set<DayOfWeek> getDaysOfWeek() {
+		return daysOfWeek;
+	}
+
+	public void setDaysOfWeek(Set<DayOfWeek> daysOfWeek) {
+		this.daysOfWeek = daysOfWeek;
+	}
+
+	public LocalTime getTime() {
+		return time;
+	}
+
+	public void setTime(LocalTime time) {
+		this.time = time;
+	}
+
+	public int getDuration() {
+		return duration;
+	}
+
+	public void setDuration(int duration) {
+		this.duration = duration;
+	}
+
+	public int getMaximumCapacity() {
+		return maximumCapacity;
+	}
+
+	public void setMaximumCapacity(int maximumCapacity) {
+		this.maximumCapacity = maximumCapacity;
+	}
+
+	public GymUserModel getInstructor() {
+		return instructor;
+	}
+
+	public void setInstructor(GymUserModel instructor) {
+		this.instructor = instructor;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public Set<Integer> getAttendeeIds() {
+		return attendeeIds;
+	}
+
+	public void setAttendeeIds(Set<Integer> attendeeIds) {
+		this.attendeeIds = attendeeIds;
+	}
+
+	public Set<Integer> getReservationIds() {
+		return reservationIds;
+	}
+
+	public void setReservationIds(Set<Integer> reservationIds) {
+		this.reservationIds = reservationIds;
+	}
+
+	public boolean addReservation(int userId) {
         if (reservationIds.size() < maximumCapacity) {
             return reservationIds.add(userId);
         }
@@ -108,4 +214,13 @@ public class GymClassModel {
         }
         return "upcoming";
     }
+
+	@Override
+	public String toString() {
+		return "GymClassModel [id=" + id + ", name=" + name + ", description=" + description + ", startDate="
+				+ startDate + ", endDate=" + endDate + ", daysOfWeek=" + daysOfWeek + ", time=" + time + ", duration="
+				+ duration + ", maximumCapacity=" + maximumCapacity + ", instructor=" + instructor + ", active="
+				+ active + ", attendeeIds=" + attendeeIds + ", reservationIds=" + reservationIds + "]";
+	}
+    
 }

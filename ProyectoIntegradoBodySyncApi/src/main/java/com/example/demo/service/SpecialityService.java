@@ -2,17 +2,17 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo.entity.Speciality;
+import com.example.demo.model.SpecialityModel;
 
 public interface SpecialityService {
 
-	List<Speciality> getAllISpecialities();
+	List<SpecialityModel> getAllISpecialities();
 
-	Speciality getSpecialityById(int id);
+	SpecialityModel getSpecialityById(int id);
 
-	void saveSpeciality(SpecialityService speciality);
+	void saveSpeciality(SpecialityModel speciality);
 
-	void updateSpeciality(int id, SpecialityService speciality);
+	void updateSpeciality(int id, SpecialityModel speciality);
 
 	void deleteSpeciality(int id);
 

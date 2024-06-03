@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import com.example.demo.converter.GymUserConverter;
 import com.example.demo.converter.RoutineConverter;
 import com.example.demo.entity.Routine;
 import com.example.demo.model.GymUserModel;
+import com.example.demo.model.RoutineModel;
 import com.example.demo.repository.RoutineRepository;
 import com.example.demo.service.RoutineService;
 
@@ -29,15 +31,19 @@ public class RoutineServiceImpl implements RoutineService{
 	private GymUserConverter gymUserConverter;
 
 	@Override
-	public Routine findByGymUser(GymUserModel gymUserModel) {
+	public RoutineModel findByGymUser(GymUserModel gymUserModel) {
 		// TODO Auto-generated method stub
-		return routineRepository.findByGymUser(gymUserConverter.transform(gymUserModel));
+		return routineConverter.transform(routineRepository.findByGymUser(gymUserConverter.transform(gymUserModel)));
 	}
 
 	@Override
-	public List<Routine> ListRoutine() {
+	public List<RoutineModel> ListRoutine() {
 		// TODO Auto-generated method stub
-		return routineRepository.findAll();
+		List<RoutineModel> l = new ArrayList<>();
+		for(Routine r : routineRepository.findAll()) {
+			l.add(routineConverter.transform(r));
+		}
+		return l;
 	}
 
 

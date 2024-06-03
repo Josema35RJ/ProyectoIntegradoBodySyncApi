@@ -37,7 +37,7 @@ public class RestUserController {
 	public ResponseEntity<?> login(@RequestParam("username") String username, @RequestParam("password") String password) {
 	    Map<String, Object> response = new HashMap<>();
 	    try {
-	        GymUser gymUser = gymUserService.findGymUserByUsernameAndPassword(username, password);
+	        GymUserModel gymUser = gymUserService.findGymUserByUsernameAndPassword(username, password);
 
 	        // Generar el token JWT
 	        String token = getJWTToken(username, password);
@@ -74,7 +74,7 @@ public class RestUserController {
 
 	
 	@PostMapping("/register")
-	public ResponseEntity<?> saveUser(@RequestBody GymUser gymUser){
+	public ResponseEntity<?> saveUser(@RequestBody GymUserModel gymUser){
 	    Map<String, Object> response = new HashMap<>();
 	    try {
 	         gymUserService.registrar(gymUser);
@@ -94,7 +94,7 @@ public class RestUserController {
 	
 	private String getJWTToken(String username, String password) {
 	    String secretKey = "mySecretKey";
-	    GymUser gymUser = gymUserService.findGymUserByUsernameAndPassword(username, password);
+	    GymUserModel gymUser = gymUserService.findGymUserByUsernameAndPassword(username, password);
 	    List<GrantedAuthority> grantedAuthorities = AuthorityUtils
 	            .commaSeparatedStringToAuthorityList(gymUser.getRole());
 	    
