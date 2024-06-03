@@ -2,8 +2,8 @@ package com.example.demo.model;
 
 import java.util.List;
 
-import com.example.demo.entity.Exercise;
-import com.example.demo.entity.GymUser;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.FetchType;
@@ -16,7 +16,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 
 public class RoutineModel {
 	// Identificador único para cada rutina.
@@ -30,6 +29,7 @@ public class RoutineModel {
 	// Lista de ejercicios que componen la rutina.
 	@NotEmpty(message = "Exercise list cannot be empty")
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<ExerciseModel> exerciseList;
 
 	// Número de días a la semana que se debe realizar la rutina.
@@ -39,6 +39,7 @@ public class RoutineModel {
 	// Referencia al usuario del gimnasio al que pertenece el ejercicio.
 	@ManyToOne
 	@JoinColumn(name = "gym_user_id")
+	   @JsonBackReference
 	private GymUserModel gymUser;
 
 	public int getId() {

@@ -1,6 +1,8 @@
 package com.example.demo.model;
 
 import com.example.demo.entity.GymUser;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +31,7 @@ public class ExerciseModel {
 	// Referencia al usuario del gimnasio al que pertenece el ejercicio.
 		@ManyToOne
 		@JoinColumn(name = "gym_user_id")
+		@JsonBackReference
 		private GymUserModel gymUser;
 
 	public int getId() {

@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,6 +34,7 @@ public class Routine {
 	// Usuario que ha hecho el registro de entrenamiento.
 	@ManyToOne
 	@NotNull(message = "GymUser is required")
+	@JsonBackReference
 	private GymUser gymUser;
 
 	// Lista de ejercicios que componen la rutina.

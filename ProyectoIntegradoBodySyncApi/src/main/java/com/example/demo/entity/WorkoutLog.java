@@ -2,6 +2,8 @@ package com.example.demo.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +28,7 @@ public class WorkoutLog {
 	// Usuario que ha hecho el registro de entrenamiento.
 	@ManyToOne
 	@NotNull(message = "GymUser is required")
+	@JsonBackReference
 	private GymUser gymUser;
 
 	// Fecha del entrenamiento.

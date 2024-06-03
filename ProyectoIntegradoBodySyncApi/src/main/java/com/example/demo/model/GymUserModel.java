@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -147,39 +148,48 @@ public class GymUserModel {
 	private LocalDateTime updatedDate;
 
 	// Lista de rutinas del usuario.
-	@OneToMany(mappedBy = "gymUser")
+	@OneToMany()
+	@JsonManagedReference
 	private List<RoutineModel> routines;
 
 	// Lista de ejercicios del usuario.
-	@OneToMany(mappedBy = "gymUser")
+	@OneToMany()
+	@JsonManagedReference
 	private List<ExerciseModel> exercises;
 
 	// Lista de planes de nutrición del usuario.
-	@OneToMany(mappedBy = "gymUser")
+	@OneToMany()
+	@JsonManagedReference
 	private List<NutritionPlanModel> nutritionPlans;
 
 	// Lista de logros del usuario.
-	@OneToMany(mappedBy = "gymUser")
+	@OneToMany()
+	@JsonManagedReference
 	private List<AchievementModel> achievements;
 
 	// Lista de reservas de clases del usuario.
-	@OneToMany(mappedBy = "gymUser")
+	@OneToMany()
+	@JsonManagedReference
 	private List<ClassReservationModel> classReservations;
 
 	// Lista de registros de entrenamiento del usuario.
-	@OneToMany(mappedBy = "gymUser")
+	@OneToMany()
+	@JsonManagedReference
 	private List<WorkoutLogModel> workoutLogs;
 
 	// Lista de registros de comidas del usuario.
-	@OneToMany(mappedBy = "gymUser")
+	@OneToMany()
+	@JsonManagedReference
 	private List<MealLogModel> mealLogs;
 
 	// Lista de registros de dolor muscular del usuario.
-	@OneToMany(mappedBy = "gymUser")
+	@OneToMany()
+	@JsonManagedReference
 	private List<MusclePainLogModel> musclePainLogs;
 
 	// Lista de clases a las que está inscrito el miembro.
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private Set<GymClassModel> enrolledClasses;
 
 	// Estado de los pagos del miembro.
@@ -210,6 +220,7 @@ public class GymUserModel {
 	// Lista de gymBros.
 	@ManyToMany
 	@JoinTable(name = "gym_bros", joinColumns = @JoinColumn(name = "gym_user_id"), inverseJoinColumns = @JoinColumn(name = "gym_bro_id"))
+	@JsonBackReference
 	private List<GymUserModel> gymBros;
 
 	private String token;

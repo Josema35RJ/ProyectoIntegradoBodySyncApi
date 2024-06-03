@@ -2,7 +2,7 @@ package com.example.demo.model;
 
 import java.time.LocalDateTime;
 
-import com.example.demo.entity.GymUser;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +20,7 @@ public class AchievementModel {
 		// Usuario que ha conseguido el logro.
 		@ManyToOne
 		@NotNull(message = "GymUser is required")
+		@JsonBackReference
 		private GymUserModel gymUser;
 
 		// Nombre del logro.

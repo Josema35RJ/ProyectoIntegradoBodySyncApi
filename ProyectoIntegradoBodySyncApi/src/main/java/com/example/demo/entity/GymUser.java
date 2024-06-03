@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.example.demo.model.SpecialityModel;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -143,6 +144,7 @@ public class GymUser {
 	//Si es Instructor, clases donde es instructor
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@Column(name = "enrolledClasses")
+	@JsonManagedReference
 	private Set<GymClass> enrolledClasses;
 
 	// Estado de los pagos del miembro.
@@ -171,34 +173,42 @@ public class GymUser {
 
 	// Lista de rutinas del usuario.
 	@OneToMany()
+	@JsonManagedReference
 	private List<Routine> routines;
 
 	// Lista de ejercicios del usuario.
 	@OneToMany()
+	@JsonManagedReference
 	private List<Exercise> exercises;
 
 	// Lista de planes de nutrición del usuario.
 	@OneToMany()
+	@JsonManagedReference
 	private List<NutritionPlan> nutritionPlans;
 
 	// Lista de logros del usuario.
 	@OneToMany(mappedBy = "gymUser")
+	@JsonManagedReference
 	private List<Achievement> achievements;
 
 	// Lista de reservas de clases del usuario.
 	@OneToMany()
+	@JsonManagedReference
 	private List<ClassReservation> classReservations;
 
 	// Lista de registros de entrenamiento del usuario.
 	@OneToMany()
+	@JsonManagedReference
 	private List<WorkoutLog> workoutLogs;
 
 	// Lista de registros de comidas del usuario.
 	@OneToMany()
+	@JsonManagedReference
 	private List<MealLog> mealLogs;
 
 	// Lista de registros de dolor muscular del usuario.
 	@OneToMany(mappedBy = "gymUser")
+	@JsonManagedReference
 	private List<MusclePainLog> musclePainLogs;
 
 	// Asistencia del usuario.

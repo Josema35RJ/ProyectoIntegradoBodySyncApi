@@ -3,6 +3,8 @@ package com.example.demo.model;
 import java.time.LocalDateTime;
 
 import com.example.demo.entity.GymUser;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +22,8 @@ public class ClassReservationModel {
 	// Usuario que ha hecho la reserva.
 	@ManyToOne
 	@NotNull(message = "GymUser is required")
-	private GymUser gymUser;
+	@JsonBackReference
+	private GymUserModel gymUser;
 
 	// Fecha y hora de la reserva.
 	private LocalDateTime reservedAt;

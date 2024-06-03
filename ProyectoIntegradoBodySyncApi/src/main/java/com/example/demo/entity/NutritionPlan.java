@@ -32,6 +32,7 @@ public class NutritionPlan {
 	// Usuario que ha hecho el registro de entrenamiento.
 	@ManyToOne
 	@NotNull(message = "GymUser is required")
+	@JsonBackReference
 	private GymUser gymUser;
 
 	// Nombre del plan de nutrición.
