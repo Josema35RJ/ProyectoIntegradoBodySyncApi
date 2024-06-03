@@ -130,6 +130,7 @@ public class GymUser {
 
 	// Lista de especialidades del instructor.
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+
 	private List<Speciality> specialtyList;
 
 	// Nombre del gimnasio del propietario.

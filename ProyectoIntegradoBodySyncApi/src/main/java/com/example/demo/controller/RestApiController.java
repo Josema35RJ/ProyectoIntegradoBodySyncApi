@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.model.GymClassModel;
@@ -69,29 +71,6 @@ public class RestApiController {
 			response.put("success", true);
 			response.put("data", gymUser);
 			response.put("message", "Usuario obtenido con exito");
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		} catch (Exception e) {
-			response.put("success", false);
-			response.put("message", e);
-			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-	
-	@GetMapping("/apiGymUser/getClases/{id}")
-	public ResponseEntity<?> ListClasesGymUser(@PathVariable int id, Principal principal) {
-		Map<String, Object> response = new HashMap<>();
-		try {
-			// Comprobar si el usuario autenticado es el mismo que el idAlumno
-			if (!principal.getName().equals(gymUserService.getGymUserById(id).getUsername())) {
-				response.put("success", false);
-				response.put("message", "No tienes permiso para ver estos servicios");
-				return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-			}
-			Set<GymClassModel> clases = gymUserService.enrolledClassesfindbyGymUserModel(id);// Obtener los servicios de la
-
-			response.put("success", true);
-			response.put("data", clases);
-			response.put("message", "Clases obtenidas con exito");
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.put("success", false);
@@ -271,4 +250,25 @@ public class RestApiController {
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@PutMapping("/apiGymUser/updateAttendanceDays/{id}")
+    public ResponseEntity<?> updateAttendanceDays(@PathVariable int id, @RequestBody Set<String> attendanceDays, Principal principal) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // Comprobar si el usuario autenticado es el mismo que el id del usuario
+            if (!principal.getName().equals(gymUserService.getGymUserById(id).getUsername())) {
+                response.put("success", false);
+                response.put("message", "No tienes permiso para actualizar los días de asistencia de este usuario");
+                return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+            }
+            gymUserService.updateAttendanceDays(id, attendanceDays);
+            response.put("success", true);
+            response.put("message", "Días de asistencia actualizados con éxito");
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

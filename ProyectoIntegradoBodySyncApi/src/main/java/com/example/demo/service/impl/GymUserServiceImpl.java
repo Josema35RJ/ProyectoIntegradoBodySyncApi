@@ -232,5 +232,14 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 		return l;
 	}
 
+	  public void updateAttendanceDays(int userId, Set<String> attendanceDays) {
+	        // Obtener el usuario de la base de datos
+	        GymUserModel user = gymUserConverter.transform(gymUserRepository.findById(userId));
 
+	        // Actualizar los días de asistencia del usuario
+	        user.setAttendanceDays(attendanceDays);
+
+	        // Guardar los cambios en la base de datos
+	        gymUserRepository.save(gymUserConverter.transform(user));
+	    }
 }
