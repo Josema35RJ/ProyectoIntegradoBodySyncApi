@@ -9,13 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.example.demo.entity.ClassReservation;
-import com.example.demo.entity.GymClass;
-import com.example.demo.entity.GymUser;
-import com.example.demo.entity.MealLog;
-import com.example.demo.entity.MusclePainLog;
-import com.example.demo.entity.Routine;
-import com.example.demo.entity.Speciality;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -190,6 +184,7 @@ public class GymUserModel {
 
 	// Estado de los pagos del miembro.
 	@Column(name = "payment_status")
+	 @JsonManagedReference
 	private Boolean paymentStatus = true;
 
 	// Cantidad que el miembro debe, si es que debe algo.

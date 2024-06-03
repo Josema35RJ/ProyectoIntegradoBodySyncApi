@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.example.demo.entity.GymUser;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.ElementCollection;
@@ -59,6 +59,7 @@ public class GymClassModel {
 
     @ManyToOne
     @JoinColumn(name="instructor_id", nullable=false)
+    @JsonManagedReference
     private GymUserModel instructor;
     
     private boolean active = true; // Nuevo campo
