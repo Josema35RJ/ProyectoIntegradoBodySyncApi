@@ -217,11 +217,7 @@ public class GymUserModel {
 	@Column(name = "day")
 	private Set<String> attendanceDays;
 
-	// Lista de gymBros.
-	@ManyToMany
-	@JoinTable(name = "gym_bros", joinColumns = @JoinColumn(name = "gym_user_id"), inverseJoinColumns = @JoinColumn(name = "gym_bro_id"))
-	@JsonBackReference
-	private List<GymUserModel> gymBros;
+	
 
 	private String token;
 	public GymUserModel() {
@@ -616,13 +612,7 @@ public class GymUserModel {
 		this.churn = churn;
 	}
 
-	public List<GymUserModel> getGymBros() {
-		return gymBros;
-	}
-
-	public void setGymBros(List<GymUserModel> gymBros) {
-		this.gymBros = gymBros;
-	}
+	
 
 	public String getToken() {
 		return token;

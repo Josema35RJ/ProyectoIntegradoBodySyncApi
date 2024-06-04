@@ -126,7 +126,7 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 	
 	@Override
 	public boolean activarDesactivar(int id) {
-		GymUser gymUser = gymUserRepository.findById(id);
+		GymUser gymUser = gymUserRepository.findById(id).get();
 		if (gymUser != null) {
 			if(!gymUser.isEnabled()) 
 				gymUser.setEnabled(true);
@@ -140,7 +140,7 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 	
 	@Override
 	public boolean eliminarGymUser(int id) {
-	    GymUser gymUser = gymUserRepository.findById(id);
+	    GymUser gymUser = gymUserRepository.findById(id).get();
 	    if (gymUser != null) {
 	        if(!gymUser.isDeleted()) {
 	            gymUser.setDeleted(true);
@@ -155,7 +155,7 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 	@Override
 	public GymUserModel getGymUserById(int id) {
 		// TODO Auto-generated method stub
-		GymUser gymUser = gymUserRepository.findById(id);
+		GymUser gymUser = gymUserRepository.findById(id).get();
 
 		return gymUserConverter.transform(gymUser);
 	}
@@ -232,9 +232,8 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 		return l;
 	}
 
-	  public void updateAttendanceDays(int userId, Set<String> attendanceDays) {
+	  public void updateAttendanceDays(GymUserModel user, Set<String> attendanceDays) {
 	        // Obtener el usuario de la base de datos
-	        GymUserModel user = gymUserConverter.transform(gymUserRepository.findById(userId));
 
 	        // Actualizar los días de asistencia del usuario
 	        user.setAttendanceDays(attendanceDays);

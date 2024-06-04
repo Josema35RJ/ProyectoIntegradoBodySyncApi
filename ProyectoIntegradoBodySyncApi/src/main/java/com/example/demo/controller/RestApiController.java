@@ -277,7 +277,7 @@ public class RestApiController {
                 response.put("message", "No tienes permiso para actualizar los días de asistencia de este usuario");
                 return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
             }
-            gymUserService.updateAttendanceDays(id, attendanceDays);
+            gymUserService.updateAttendanceDays(gymUserService.getGymUserById(id), attendanceDays);
             response.put("success", true);
             response.put("message", "Días de asistencia actualizados con éxito");
             return new ResponseEntity<>(response, HttpStatus.OK);
