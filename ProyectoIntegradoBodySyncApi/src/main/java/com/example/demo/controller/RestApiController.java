@@ -109,6 +109,8 @@ public class RestApiController {
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	
 
 	@GetMapping("/apiGymInstructor/getMiembros/{id}")
 	public ResponseEntity<?> ListGymUserGymInstructor(@PathVariable int id, Principal principal) {
@@ -143,6 +145,29 @@ public class RestApiController {
 
 			response.put("success", true);
 			response.put("data", clases);
+			response.put("message", "Clases obtenidas con exito");
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("success", false);
+			response.put("message", e);
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping("/apiGymUser/addUserClass/{id}")
+	public ResponseEntity<?> addUserClass(@PathVariable int id,@RequestBody String classId, Principal principal) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			// Comprobar si el usuario autenticado es el mismo que el idAlumno
+			if (!principal.getName().equals(gymUserService.getGymUserById(id).getUsername())) {
+				response.put("success", false);
+				response.put("message", "No tienes permiso para ver estos servicios");
+				return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+			}
+			
+			gymUserService.updateClassUser(gymUserService.getGymUserById(id),gymClassService.getClassById(Integer.valueOf(classId)));
+																																// servicios																													// d																												// la
+			response.put("success", true);
 			response.put("message", "Clases obtenidas con exito");
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
@@ -258,7 +283,7 @@ public class RestApiController {
 			
 			List<UserInjuryModel> ListUserInjury = userInjuryService.ListUserInjury();
 			response.put("data", ListUserInjury);
-			response.put("message", "Lesiones obtenidos con exito");
+			response.put("message", "Lesiones obtenidas con exito");
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.put("success", false);
@@ -276,9 +301,8 @@ public class RestApiController {
 	            response.put("success", false);
 	            response.put("message", "No tienes permiso para actualizar los días de asistencia de este usuario");
 	            return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-	        }
-	        int injuryId = Integer.valueOf(userInjuryId); // Convertir la cadena a entero
-	        gymUserService.updateUserInjury(gymUserService.getGymUserById(id), injuryId);
+	        } 
+	        gymUserService.updateUserInjury(gymUserService.getGymUserById(id), Integer.valueOf(userInjuryId));
 	        response.put("success", true);
 	        response.put("message", "Dolor o molestia asignada con éxito");
 	        return new ResponseEntity<>(response, HttpStatus.OK);
@@ -312,17 +336,19 @@ public class RestApiController {
     }
 	
 	@GetMapping("/apiGymUser/Exercises")
-	public ResponseEntity<?> ListExercises() {
-		Map<String, Object> response = new HashMap<>();
-		try {
-			List<ExerciseModel> nutritionPlan = exerciseService.ListExercise();
-			response.put("data", nutritionPlan);
-			response.put("message", "Ejecicios obtenidos con exito");
-			return new ResponseEntity<>(response, HttpStatus.OK);
-		} catch (Exception e) {
-			response.put("success", false);
-			response.put("message", e);
-			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	public ResponseEntity<?> listExercises() {
+	  Map<String, Object> response = new HashMap<>();
+	  try {
+	    List<ExerciseModel> exerciseList = exerciseService.ListExercise();
+	    response.put("success", true);
+	    response.put("data", exerciseList);
+	    response.put("message", "Exercises retrieved successfully");
+	    return new ResponseEntity<>(response, HttpStatus.OK);
+	  } catch (Exception e) {
+	    response.put("success", false);
+	    response.put("message", e.getMessage()); // Devuelve el mensaje de error específico
+	    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	  }
 	}
+
 }

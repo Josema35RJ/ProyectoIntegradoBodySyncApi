@@ -268,4 +268,11 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 		gymUserRepository.save(gymUserConverter.transform(gymUser));
 		
 	}
+
+	@Override
+	public void updateClassUser(GymUserModel gymUser, GymClassModel c) {
+		// TODO Auto-generated method stub
+		gymUser.getEnrolledClasses().add(c);
+		gymUserRepository.save(gymUserConverter.transform(gymUser));
+	}
 }
