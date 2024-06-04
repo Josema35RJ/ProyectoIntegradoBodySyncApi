@@ -30,11 +30,7 @@ public class UserInjuryServiceImpl implements UserInjuryService{
 	@Qualifier("gymUserConverter")
 	private GymUserConverter gymUserConverter;
 
-	@Override
-	public UserInjuryModel findByGymUser(GymUserModel gymUserModel) {
-		// TODO Auto-generated method stub
-		return userInjuryConverter.transform(userInjuryRepository.findByGymUser(gymUserConverter.transform(gymUserModel)));
-	}
+	
 
 	@Override
 	public List<UserInjuryModel> ListUserInjury() {

@@ -9,8 +9,7 @@ import com.example.demo.entity.GymUser;
 import com.example.demo.entity.UserInjury;
 
 @Repository("userInjuryRepository")
-public interface UserInjuryRepository extends JpaRepository<UserInjury, Serializable> {
-
-	UserInjury findByGymUser(GymUser gymUser);
+public interface UserInjuryRepository extends JpaRepository<UserInjury, Integer> {
+    
 
 }

@@ -27,9 +27,11 @@ import com.example.demo.converter.GymClassConverter;
 import com.example.demo.converter.GymUserConverter;
 import com.example.demo.entity.GymClass;
 import com.example.demo.entity.GymUser;
+import com.example.demo.entity.UserInjury;
 import com.example.demo.model.GymClassModel;
 import com.example.demo.model.GymUserModel;
 import com.example.demo.repository.GymUserRepository;
+import com.example.demo.repository.UserInjuryRepository;
 import com.example.demo.security.CustomUserDetails;
 import com.example.demo.service.GymUserService;
 
@@ -39,6 +41,10 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 	@Autowired
 	@Qualifier("gymUserRepository")
 	private GymUserRepository gymUserRepository;
+	
+	@Autowired
+	@Qualifier("userInjuryRepository")
+	private UserInjuryRepository userInjuryRepository;
 	
 	@Autowired
 	@Qualifier("gymUserConverter")
@@ -232,7 +238,7 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 		return l;
 	}
 
-	  public void updateAttendanceDays(GymUserModel user, Set<String> attendanceDays) {
+	  public void updateAttendanceDays(GymUserModel user, Set<Date> attendanceDays) {
 	        // Obtener el usuario de la base de datos
 
 	        // Actualizar los días de asistencia del usuario
@@ -252,5 +258,14 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 					count++;
 		}
 		return count;
+	}
+
+	@Override
+	public void updateUserInjury(GymUserModel gymUser,  int userInjuryId) {
+		UserInjury userInjury = userInjuryRepository.findById(userInjuryId).get();
+		userInjuryRepository.save(userInjury);
+		gymUser.getInjuriesList().add(userInjury);
+		gymUserRepository.save(gymUserConverter.transform(gymUser));
+		
 	}
 }

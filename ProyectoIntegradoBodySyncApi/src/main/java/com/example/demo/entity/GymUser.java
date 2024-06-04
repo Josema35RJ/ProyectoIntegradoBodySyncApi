@@ -163,7 +163,7 @@ public class GymUser {
     @CollectionTable(name = "attendance_days", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "day")
     @ToString.Exclude
-    private Set<String> attendanceDays = new HashSet<>();
+    private Set<Date> attendanceDays = new HashSet<>();
 
     // Fecha de creación del registro del miembro.
     @CreatedDate
@@ -224,7 +224,7 @@ public class GymUser {
     @CollectionTable(name = "user_injuries", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "injury")
     @ToString.Exclude
-    private Set<String> injuriesList = new HashSet<>();
+    private Set<UserInjury> injuriesList = new HashSet<>();
 
     private Boolean churn;
 

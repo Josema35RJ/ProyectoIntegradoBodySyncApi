@@ -1,6 +1,6 @@
 package com.example.demo.repository;
 
-import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +23,7 @@ public interface GymUserRepository extends JpaRepository<GymUser, Integer> {
 	
 	 List<GymUser> findByRole( String role);
 
-	Integer countByAttendanceDaysContains(String day);
+	Integer countByAttendanceDaysContains(Date day);
 
 	Integer countByEnabled(boolean b);
 

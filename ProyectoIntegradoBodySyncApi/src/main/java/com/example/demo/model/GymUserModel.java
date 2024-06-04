@@ -9,7 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.example.demo.entity.UserInjury;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -21,7 +21,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
@@ -207,7 +206,7 @@ public class GymUserModel {
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "user_injuries", joinColumns = @JoinColumn(name = "user_id"))
 	@Column(name = "injury")
-	private Set<String> injuriesList;
+	private Set<UserInjury> injuriesList;
 
 	private Boolean churn;
 
@@ -215,9 +214,7 @@ public class GymUserModel {
 	@ElementCollection(fetch = FetchType.LAZY)
 	@CollectionTable(name = "attendance_days", joinColumns = @JoinColumn(name = "user_id"))
 	@Column(name = "day")
-	private Set<String> attendanceDays;
-
-	
+	private Set<Date> attendanceDays;
 
 	private String token;
 	public GymUserModel() {
@@ -556,11 +553,11 @@ public class GymUserModel {
 		this.debt = debt;
 	}
 
-	public Set<String> getAttendanceDays() {
+	public Set<Date> getAttendanceDays() {
 		return attendanceDays;
 	}
 
-	public void setAttendanceDays(Set<String> attendanceDays) {
+	public void setAttendanceDays(Set<Date> attendanceDays) {
 		this.attendanceDays = attendanceDays;
 	}
 
@@ -596,11 +593,11 @@ public class GymUserModel {
 		this.paymentStatus = paymentStatus;
 	}
 
-	public Set<String> getInjuriesList() {
+	public Set<UserInjury> getInjuriesList() {
 		return injuriesList;
 	}
 
-	public void setInjuriesList(Set<String> injuriesList) {
+	public void setInjuriesList(Set<UserInjury> injuriesList) {
 		this.injuriesList = injuriesList;
 	}
 

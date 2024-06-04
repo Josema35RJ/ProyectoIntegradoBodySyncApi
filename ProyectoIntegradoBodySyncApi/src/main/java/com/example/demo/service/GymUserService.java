@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.example.demo.entity.GymClass;
 import com.example.demo.entity.GymUser;
+import com.example.demo.entity.UserInjury;
 import com.example.demo.model.GymClassModel;
 import com.example.demo.model.GymUserModel;
 
@@ -27,6 +28,7 @@ public interface GymUserService {
 	   List<GymUserModel> ListGymUsersByClassId(int classId);
 	GymUserModel findGymUserByUsernameAndPassword(String username, String password);
 	Set<GymClassModel> enrolledClassesfindbyGymUserModel(Integer id);
-	void updateAttendanceDays(GymUserModel user, Set<String> attendanceDays);
+	void updateAttendanceDays(GymUserModel user, Set<Date> attendanceDays);
 	int countClassMusculation();
+	void updateUserInjury(GymUserModel gymUser, int userInjury);
 }

@@ -64,10 +64,6 @@ public class UserInjury {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate recoveryDate;
 
-	// Relación con el usuario del gimnasio.
-	@ManyToOne
-	@JoinColumn(name = "gym_user_id", nullable = false)
-	private GymUser gymUser;
 
 	public Integer getId() {
 		return id;
@@ -115,14 +111,6 @@ public class UserInjury {
 
 	public void setRecoveryDate(LocalDate recoveryDate) {
 		this.recoveryDate = recoveryDate;
-	}
-
-	public GymUser getGymUser() {
-		return gymUser;
-	}
-
-	public void setGymUser(GymUser gymUser) {
-		this.gymUser = gymUser;
 	}
 
 }

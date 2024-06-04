@@ -6,7 +6,7 @@ import com.example.demo.model.GymUserModel;
 import com.example.demo.model.UserInjuryModel;
 
 public interface UserInjuryService {
-	UserInjuryModel findByGymUser (GymUserModel gymUserModel);
+
 	 List<UserInjuryModel> ListUserInjury ();
 
 }
