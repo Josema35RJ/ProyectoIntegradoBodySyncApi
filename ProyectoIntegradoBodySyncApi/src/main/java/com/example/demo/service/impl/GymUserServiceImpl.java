@@ -242,4 +242,16 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 	        // Guardar los cambios en la base de datos
 	        gymUserRepository.save(gymUserConverter.transform(user));
 	    }
+
+	@Override
+	public int countClassMusculation() {
+		// TODO Auto-generated method stub
+		int count = 0;
+		for(GymUser g : gymUserRepository.findAll()) {
+			for(GymClass c : g.getEnrolledClasses())
+				if(c.getName().equals("Musculacion"))
+					count++;
+		}
+		return count;
+	}
 }

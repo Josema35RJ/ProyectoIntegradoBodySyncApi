@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.model.ExerciseModel;
 import com.example.demo.model.GymClassModel;
 import com.example.demo.model.GymUserModel;
 import com.example.demo.model.NutritionPlanModel;
 import com.example.demo.model.RoutineModel;
 import com.example.demo.model.UserInjuryModel;
 import com.example.demo.model.WorkoutModel;
+import com.example.demo.service.ExerciseService;
 import com.example.demo.service.GymClassService;
 import com.example.demo.service.GymUserService;
 import com.example.demo.service.NutritionPlanService;
@@ -47,6 +49,10 @@ public class RestApiController {
 	@Autowired
 	@Qualifier("workoutService")
 	private WorkoutService workoutService;
+	
+	@Autowired
+	@Qualifier("exerciseService")
+	private ExerciseService exerciseService;
 	
 	@Autowired
 	@Qualifier("routineService")
@@ -235,6 +241,14 @@ public class RestApiController {
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@GetMapping("/apiGymUser/CountMusculationUsers")
+    public int countClassMusculation() {
+        int countUsers = gymUserService.countClassMusculation();
+
+        return countUsers;
+    }
+	
 	@GetMapping("/apiGymUser/UserInjury")
 	public ResponseEntity<?> ListUserInjury() {
 		Map<String, Object> response = new HashMap<>();
@@ -250,6 +264,8 @@ public class RestApiController {
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	
 	
 	@PutMapping("/apiGymUser/updateAttendanceDays/{id}")
     public ResponseEntity<?> updateAttendanceDays(@PathVariable int id, @RequestBody Set<String> attendanceDays, Principal principal) {
@@ -271,4 +287,19 @@ public class RestApiController {
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+	
+	@GetMapping("/apiGymUser/Exercises")
+	public ResponseEntity<?> ListExercises() {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			List<ExerciseModel> nutritionPlan = exerciseService.ListExercise();
+			response.put("data", nutritionPlan);
+			response.put("message", "Ejecicios obtenidos con exito");
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("success", false);
+			response.put("message", e);
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

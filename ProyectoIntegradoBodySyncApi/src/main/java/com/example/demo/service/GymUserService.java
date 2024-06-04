@@ -28,4 +28,5 @@ public interface GymUserService {
 	GymUserModel findGymUserByUsernameAndPassword(String username, String password);
 	Set<GymClassModel> enrolledClassesfindbyGymUserModel(Integer id);
 	void updateAttendanceDays(int userId, Set<String> attendanceDays);
+	int countClassMusculation();
 }

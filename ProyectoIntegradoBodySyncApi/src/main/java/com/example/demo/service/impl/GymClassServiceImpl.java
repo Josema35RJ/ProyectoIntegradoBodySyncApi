@@ -125,4 +125,6 @@ public class GymClassServiceImpl implements GymClassService {
 		// TODO Auto-generated method stub
 		gymClassRepository.save(gymClassConverter.transform(gymClass));
 	}
+
+	
 }
