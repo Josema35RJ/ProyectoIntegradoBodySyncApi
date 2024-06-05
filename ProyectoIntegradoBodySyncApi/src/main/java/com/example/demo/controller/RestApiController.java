@@ -313,7 +313,6 @@ public class RestApiController {
 	    }
 	}
 
-	
 	@PutMapping("/apiGymUser/updateAttendanceDays/{id}")
     public ResponseEntity<?> updateAttendanceDays(@PathVariable int id, @RequestBody Set<Date> attendanceDays, Principal principal) {
         Map<String, Object> response = new HashMap<>();

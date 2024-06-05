@@ -193,7 +193,6 @@ public class GymUserModel {
 
 	// Estado de los pagos del miembro.
 	@Column(name = "payment_status")
-	 @JsonManagedReference
 	private Boolean paymentStatus = true;
 
 	// Cantidad que el miembro debe, si es que debe algo.

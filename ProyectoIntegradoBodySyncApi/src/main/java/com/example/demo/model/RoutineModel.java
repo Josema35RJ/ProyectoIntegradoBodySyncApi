@@ -29,7 +29,7 @@ public class RoutineModel {
 	// Lista de ejercicios que componen la rutina.
 	@NotEmpty(message = "Exercise list cannot be empty")
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JsonManagedReference
+	
 	private List<ExerciseModel> exerciseList;
 
 	// Número de días a la semana que se debe realizar la rutina.
