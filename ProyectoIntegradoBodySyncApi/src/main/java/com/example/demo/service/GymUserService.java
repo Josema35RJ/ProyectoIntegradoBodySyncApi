@@ -30,6 +30,7 @@ public interface GymUserService {
 	Set<GymClassModel> enrolledClassesfindbyGymUserModel(Integer id);
 	void updateAttendanceDays(GymUserModel user, Set<Date> attendanceDays);
 	int countClassMusculation();
-	void updateUserInjury(GymUserModel gymUser, int userInjury);
 	void updateClassUser(GymUserModel gymUser, GymClassModel c);
+	void addInjuryToUser(GymUserModel user, Integer injuryId);
+	void updateUserInjury(GymUserModel gymUser, int userInjuryId);
 }

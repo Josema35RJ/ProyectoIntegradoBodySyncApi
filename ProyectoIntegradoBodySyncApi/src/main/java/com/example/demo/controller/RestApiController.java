@@ -292,26 +292,26 @@ public class RestApiController {
 		}
 	}
 	
-	@PostMapping("/apiGymUser/UserInjury/{id}")
-	public ResponseEntity<?> addUserInjury(@PathVariable int id, @RequestBody String userInjuryId, Principal principal) {
-	    Map<String, Object> response = new HashMap<>();
-	    try {
-	        // Comprobar si el usuario autenticado es el mismo que el id del usuario
-	        if (!principal.getName().equals(gymUserService.getGymUserById(id).getUsername())) {
+	   @PostMapping("/apiGymUser/UserInjury/{id}")
+	    public ResponseEntity<?> addUserInjury(@PathVariable int id, @RequestBody String userInjuryId, Principal principal) {
+	        Map<String, Object> response = new HashMap<>();
+	        try {
+	            // Comprobar si el usuario autenticado es el mismo que el id del usuario
+	            if (!principal.getName().equals(gymUserService.getGymUserById(id).getUsername())) {
+	                response.put("success", false);
+	                response.put("message", "No tienes permiso para actualizar los días de asistencia de este usuario");
+	                return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+	            }
+	            gymUserService.addInjuryToUser(gymUserService.getGymUserById(id), Integer.valueOf(userInjuryId));
+	            response.put("success", true);
+	            response.put("message", "Dolor o molestia asignada con éxito");
+	            return new ResponseEntity<>(response, HttpStatus.OK);
+	        } catch (Exception e) {
 	            response.put("success", false);
-	            response.put("message", "No tienes permiso para actualizar los días de asistencia de este usuario");
-	            return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-	        } 
-	        gymUserService.updateUserInjury(gymUserService.getGymUserById(id), Integer.valueOf(userInjuryId));
-	        response.put("success", true);
-	        response.put("message", "Dolor o molestia asignada con éxito");
-	        return new ResponseEntity<>(response, HttpStatus.OK);
-	    } catch (Exception e) {
-	        response.put("success", false);
-	        response.put("message", e.getMessage());
-	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	            response.put("message", e.getMessage());
+	            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
 	    }
-	}
 
 	@PutMapping("/apiGymUser/updateAttendanceDays/{id}")
     public ResponseEntity<?> updateAttendanceDays(@PathVariable int id, @RequestBody Set<Date> attendanceDays, Principal principal) {

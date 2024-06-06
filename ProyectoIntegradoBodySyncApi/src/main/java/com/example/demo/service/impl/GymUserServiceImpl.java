@@ -28,10 +28,12 @@ import com.example.demo.converter.GymUserConverter;
 import com.example.demo.entity.GymClass;
 import com.example.demo.entity.GymUser;
 import com.example.demo.entity.UserInjury;
+import com.example.demo.entity.UserInjuryStatus;
 import com.example.demo.model.GymClassModel;
 import com.example.demo.model.GymUserModel;
 import com.example.demo.repository.GymUserRepository;
 import com.example.demo.repository.UserInjuryRepository;
+import com.example.demo.repository.UserInjuryStatusRepository;
 import com.example.demo.security.CustomUserDetails;
 import com.example.demo.service.GymUserService;
 
@@ -49,6 +51,10 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 	@Autowired
 	@Qualifier("gymUserConverter")
 	private GymUserConverter gymUserConverter;
+	
+	 @Autowired
+	 @Qualifier("userInjuryStatusRepository")
+	    private UserInjuryStatusRepository userInjuryStatusRepository;
 	
 	@Autowired
 	@Qualifier("gymClassConverter")
@@ -275,4 +281,14 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 		gymUser.getEnrolledClasses().add(c);
 		gymUserRepository.save(gymUserConverter.transform(gymUser));
 	}
+
+	    public void addInjuryToUser(GymUserModel user, Integer injuryId) {
+	       
+			UserInjury userInjury = userInjuryRepository.findById(injuryId).get();
+	        UserInjuryStatus userInjuryStatus = new UserInjuryStatus();
+	        userInjuryStatus.setGymUser(gymUserConverter.transform(user));
+	        userInjuryStatus.setUserInjury(userInjury);
+	        userInjuryStatus.activate(); // Optional: if you want to immediately activate the injury
+	        userInjuryStatusRepository.save(userInjuryStatus);
+	    }
 }

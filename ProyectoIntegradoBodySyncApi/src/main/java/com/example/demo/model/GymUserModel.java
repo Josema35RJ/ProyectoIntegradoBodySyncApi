@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -9,6 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.example.demo.entity.GymUser;
 import com.example.demo.entity.UserInjury;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -21,6 +23,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
@@ -30,6 +33,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
+import lombok.ToString;
 
 public class GymUserModel {
 
@@ -214,8 +218,19 @@ public class GymUserModel {
 	@CollectionTable(name = "attendance_days", joinColumns = @JoinColumn(name = "user_id"))
 	@Column(name = "day")
 	private Set<Date> attendanceDays;
+	
+	 // Lista de compañeros de gimnasio del usuario.
+    @OneToMany
+    @JoinTable(
+        name = "gym_bros",
+        joinColumns = @JoinColumn(name = "gym_user_id")
+    )
+    @ToString.Exclude
+    private List<GymUser> gymBros = new ArrayList<>();
+
 
 	private String token;
+	
 	public GymUserModel() {
 		super();
 	}
@@ -608,7 +623,13 @@ public class GymUserModel {
 		this.churn = churn;
 	}
 
-	
+	public List<GymUser> getGymBros() {
+		return gymBros;
+	}
+
+	public void setGymBros(List<GymUser> gymBros) {
+		this.gymBros = gymBros;
+	}
 
 	public String getToken() {
 		return token;
@@ -626,11 +647,12 @@ public class GymUserModel {
 				+ ", height=" + height + ", activityLevel=" + activityLevel + ", goal=" + goal + ", deleted=" + deleted
 				+ ", enabled=" + enabled + ", biography=" + biography + ", specialtyList=" + specialtyList
 				+ ", gymName=" + gymName + ", gymLocation=" + gymLocation + ", createdDate=" + createdDate
-				+ ", updatedDate=" + updatedDate + ", exercises=" + exercises + ", nutritionPlans=" + nutritionPlans
-				+ ", achievements=" + achievements + ", classReservations=" + classReservations + ", workoutLogs="
-				+ workoutLogs + ", mealLogs=" + mealLogs + ", musclePainLogs=" + musclePainLogs + ", enrolledClasses="
-				+ enrolledClasses + ", paymentStatus=" + paymentStatus + ", debt=" + debt + ", attendance=" + attendance
-				+ ", injuriesList=" + injuriesList + ", churn=" + churn + ", attendanceDays=" + attendanceDays + "]";
+				+ ", updatedDate=" + updatedDate + ", routines=" + routines + ", exercises=" + exercises
+				+ ", nutritionPlans=" + nutritionPlans + ", achievements=" + achievements + ", classReservations="
+				+ classReservations + ", workoutLogs=" + workoutLogs + ", mealLogs=" + mealLogs + ", musclePainLogs="
+				+ musclePainLogs + ", enrolledClasses=" + enrolledClasses + ", paymentStatus=" + paymentStatus
+				+ ", debt=" + debt + ", attendance=" + attendance + ", injuriesList=" + injuriesList + ", churn="
+				+ churn + ", attendanceDays=" + attendanceDays + ", gymBros=" + gymBros + ", token=" + token + "]";
 	}
 
 }
