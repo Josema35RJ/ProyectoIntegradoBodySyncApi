@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entity.UserInjuryStatus;
 import com.example.demo.model.ExerciseModel;
 import com.example.demo.model.GymClassModel;
 import com.example.demo.model.GymUserModel;
 import com.example.demo.model.NutritionPlanModel;
 import com.example.demo.model.RoutineModel;
+import com.example.demo.model.UserInjuryModel;
 import com.example.demo.model.UserInjuryStatusModel;
 import com.example.demo.model.WorkoutModel;
 import com.example.demo.service.ExerciseService;
@@ -53,17 +53,15 @@ public class RestApiController {
 	@Autowired
 	@Qualifier("workoutService")
 	private WorkoutService workoutService;
-	
-	
+
 	@Autowired
 	@Qualifier("userInjuryStatusService")
 	private UserInjuryStatusService userInjuryStatusService;
-	
-	
+
 	@Autowired
 	@Qualifier("exerciseService")
 	private ExerciseService exerciseService;
-	
+
 	@Autowired
 	@Qualifier("routineService")
 	private RoutineService routineService;
@@ -71,7 +69,7 @@ public class RestApiController {
 	@Autowired
 	@Qualifier("userInjuryService")
 	private UserInjuryService userInjuryService;
-	
+
 	@GetMapping("/apiGymUser/getGymUser/{id}")
 	public ResponseEntity<?> GymUser(@PathVariable int id, Principal principal) {
 		Map<String, Object> response = new HashMap<>();
@@ -94,13 +92,13 @@ public class RestApiController {
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@GetMapping("/apiGymUser/ListGymUser")
-	public ResponseEntity<?> ListGymUser( Principal principal) {
+	public ResponseEntity<?> ListGymUser(Principal principal) {
 		Map<String, Object> response = new HashMap<>();
 		try {
 			// Comprobar si el usuario autenticado es el mismo que el idAlumno
-					
+
 			List<GymUserModel> listGymUser = gymUserService.ListAllGymUsers();
 
 			response.put("success", true);
@@ -114,7 +112,6 @@ public class RestApiController {
 		}
 	}
 
-
 	@GetMapping("/apiGymInstructor/getClases/{id}")
 	public ResponseEntity<?> ListClasesGymInstructor(@PathVariable int id, Principal principal) {
 		Map<String, Object> response = new HashMap<>();
@@ -125,7 +122,9 @@ public class RestApiController {
 				response.put("message", "No tienes permiso para ver estos servicios");
 				return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
 			}
-			List<GymClassModel> clases = gymClassService.getAllClassesFinByInstructorId(gymUserService.getGymUserById(id));// Obtener																														// los																														// servicios																													// d																												// la
+			List<GymClassModel> clases = gymClassService
+					.getAllClassesFinByInstructorId(gymUserService.getGymUserById(id));// Obtener // los // servicios //
+																						// d // la
 			response.put("success", true);
 			response.put("data", clases);
 			response.put("message", "Clases obtenidas con exito");
@@ -136,8 +135,6 @@ public class RestApiController {
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	
 
 	@GetMapping("/apiGymInstructor/getMiembros/{id}")
 	public ResponseEntity<?> ListGymUserGymInstructor(@PathVariable int id, Principal principal) {
@@ -180,9 +177,9 @@ public class RestApiController {
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@PostMapping("/apiGymUser/addUserClass/{id}")
-	public ResponseEntity<?> addUserClass(@PathVariable int id,@RequestBody String classId, Principal principal) {
+	public ResponseEntity<?> addUserClass(@PathVariable int id, @RequestBody String classId, Principal principal) {
 		Map<String, Object> response = new HashMap<>();
 		try {
 			// Comprobar si el usuario autenticado es el mismo que el idAlumno
@@ -191,9 +188,10 @@ public class RestApiController {
 				response.put("message", "No tienes permiso para ver estos servicios");
 				return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
 			}
-			
-			gymUserService.updateClassUser(gymUserService.getGymUserById(id),gymClassService.getClassById(Integer.valueOf(classId)));
-																																// servicios																													// d																												// la
+
+			gymUserService.updateClassUser(gymUserService.getGymUserById(id),
+					gymClassService.getClassById(Integer.valueOf(classId)));
+			// servicios // d // la
 			response.put("success", true);
 			response.put("message", "Clases obtenidas con exito");
 			return new ResponseEntity<>(response, HttpStatus.OK);
@@ -216,7 +214,7 @@ public class RestApiController {
 				return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
 			}
 			NutritionPlanModel nutritionPlan = nutritionPlanService.findByGymUser(gymUserService.getGymUserById(id)); // de
-																													// la
+																														// la
 
 			response.put("success", true);
 			response.put("data", nutritionPlan);
@@ -264,12 +262,12 @@ public class RestApiController {
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@GetMapping("/apiGymUser/Workout")
 	public ResponseEntity<?> ListWorkout() {
 		Map<String, Object> response = new HashMap<>();
 		try {
-			
+
 			List<WorkoutModel> workout = workoutService.ListWorkout();
 			response.put("data", workout);
 			response.put("message", "Entrenamientos obtenidos con exito");
@@ -280,12 +278,12 @@ public class RestApiController {
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@GetMapping("/apiGymUser/Routine")
 	public ResponseEntity<?> ListRoutine() {
 		Map<String, Object> response = new HashMap<>();
 		try {
-			
+
 			List<RoutineModel> ListRoutine = routineService.ListRoutine();
 			response.put("data", ListRoutine);
 			response.put("message", "Rutinas obtenidos con exito");
@@ -296,13 +294,13 @@ public class RestApiController {
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@GetMapping("/apiGymUser/CountMusculationUsers")
-    public int countClassMusculation() {
-        int countUsers = gymUserService.countClassMusculation();
-        return countUsers;
-    }
-	
+	public int countClassMusculation() {
+		int countUsers = gymUserService.countClassMusculation();
+		return countUsers;
+	}
+
 	@GetMapping("/apiGymUser/UserInjuryStatus/{id}")
 	public ResponseEntity<?> ListUserInjuryStatus(@PathVariable int id) {
 		Map<String, Object> response = new HashMap<>();
@@ -320,25 +318,26 @@ public class RestApiController {
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
-	@GetMapping("/apiGymUser/addUserInjuryStatus/{id}")
-	public ResponseEntity<?> addUserInjuryStatus(@PathVariable int id, Principal principal, @RequestBody Map<String, Object> requestBody) {
+
+	@PostMapping("/apiGymUser/addUserInjuryStatus/{id}")
+	public ResponseEntity<?> addUserInjuryStatus(@PathVariable int id, Principal principal,
+			@RequestBody Map<String, Object> requestBody) {
 		Map<String, Object> response = new HashMap<>();
 		try {
 			// Comprobar si el usuario autenticado es el mismo que el idAlumno
-						if (!principal.getName().equals(gymClassService.getClassById(id).getInstructor().getUsername())) {
-							response.put("success", false);
-							response.put("message", "No tienes permiso ");
-							return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-						}
-						
-						Integer gymUserId = (Integer) requestBody.get("gymUserId");
-				        Integer userInjuryId = (Integer) requestBody.get("userInjuryId");
-				        boolean isActive = (boolean) requestBody.get("isActive");
-				        
-				        // Llamar al servicio para añadir el estado de lesión del usuario
-				        userInjuryStatusService.addUserInjuryStatus(gymUserId, userInjuryId, isActive);
-	
+			if (!principal.getName().equals(gymClassService.getClassById(id).getInstructor().getUsername())) {
+				response.put("success", false);
+				response.put("message", "No tienes permiso ");
+				return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+			}
+
+			Integer gymUserId = (Integer) requestBody.get("gymUserId");
+			Integer userInjuryId = (Integer) requestBody.get("userInjuryId");
+			boolean isActive = (boolean) requestBody.get("isActive");
+
+			// Llamar al servicio para añadir el estado de lesión del usuario
+			userInjuryStatusService.addUserInjuryStatus(gymUserId, userInjuryId, isActive);
+
 			response.put("message", "Lesion añadida con exito");
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
@@ -348,62 +347,88 @@ public class RestApiController {
 		}
 	}
 	
-	   @PostMapping("/apiGymUser/UserInjury/{id}")
-	    public ResponseEntity<?> addUserInjury(@PathVariable int id, @RequestBody String userInjuryId, Principal principal) {
-	        Map<String, Object> response = new HashMap<>();
-	        try {
-	            // Comprobar si el usuario autenticado es el mismo que el id del usuario
-	            if (!principal.getName().equals(gymUserService.getGymUserById(id).getUsername())) {
-	                response.put("success", false);
-	                response.put("message", "No tienes permiso para actualizar los días de asistencia de este usuario");
-	                return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-	            }
-	            gymUserService.addInjuryToUser(gymUserService.getGymUserById(id), Integer.valueOf(userInjuryId));
-	            response.put("success", true);
-	            response.put("message", "Dolor o molestia asignada con éxito");
-	            return new ResponseEntity<>(response, HttpStatus.OK);
-	        } catch (Exception e) {
+	@PutMapping("/apiGymUser/updateUserInjuryStatus/{id}")
+	public ResponseEntity<?> updateUserInjuryStatus(@PathVariable int id, Principal principal,
+	        @RequestBody Map<String, Object> requestBody) {
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        // Comprobar si el usuario autenticado es el mismo que el instructor de la clase
+	        if (!principal.getName().equals(gymClassService.getClassById(id).getInstructor().getUsername())) {
 	            response.put("success", false);
-	            response.put("message", e.getMessage());
-	            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	            response.put("message", "No tienes permiso ");
+	            return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
 	        }
+
+	        Integer gymUserId = (Integer) requestBody.get("gymUserId");
+	        Integer userInjuryId = (Integer) requestBody.get("userInjuryId");
+	        boolean isActive = (boolean) requestBody.get("isActive");
+
+	        // Llamar al servicio para actualizar el estado de lesión del usuario
+	        userInjuryStatusService.updateUserInjuryStatus(gymUserId, userInjuryId, isActive);
+
+	        response.put("message", "Estado de lesión actualizado con éxito");
+	        return new ResponseEntity<>(response, HttpStatus.OK);
+	    } catch (Exception e) {
+	        response.put("success", false);
+	        response.put("message", e.getMessage());
+	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
+	}
+
 
 	@PutMapping("/apiGymUser/updateAttendanceDays/{id}")
-    public ResponseEntity<?> updateAttendanceDays(@PathVariable int id, @RequestBody Set<Date> attendanceDays, Principal principal) {
-        Map<String, Object> response = new HashMap<>();
-        try {
-            // Comprobar si el usuario autenticado es el mismo que el id del usuario
-            if (!principal.getName().equals(gymUserService.getGymUserById(id).getUsername())) {
-                response.put("success", false);
-                response.put("message", "No tienes permiso para actualizar los días de asistencia de este usuario");
-                return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
-            }
-            gymUserService.updateAttendanceDays(gymUserService.getGymUserById(id), attendanceDays);
-            response.put("success", true);
-            response.put("message", "Días de asistencia actualizados con éxito");
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            response.put("success", false);
-            response.put("message", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-	
+	public ResponseEntity<?> updateAttendanceDays(@PathVariable int id, @RequestBody Set<Date> attendanceDays,
+			Principal principal) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			// Comprobar si el usuario autenticado es el mismo que el id del usuario
+			if (!principal.getName().equals(gymUserService.getGymUserById(id).getUsername())) {
+				response.put("success", false);
+				response.put("message", "No tienes permiso para actualizar los días de asistencia de este usuario");
+				return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+			}
+			gymUserService.updateAttendanceDays(gymUserService.getGymUserById(id), attendanceDays);
+			response.put("success", true);
+			response.put("message", "Días de asistencia actualizados con éxito");
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("success", false);
+			response.put("message", e.getMessage());
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@GetMapping("/apiGymUser/Exercises")
 	public ResponseEntity<?> listExercises() {
-	  Map<String, Object> response = new HashMap<>();
-	  try {
-	    List<ExerciseModel> exerciseList = exerciseService.ListExercise();
-	    response.put("success", true);
-	    response.put("data", exerciseList);
-	    response.put("message", "Exercises retrieved successfully");
-	    return new ResponseEntity<>(response, HttpStatus.OK);
-	  } catch (Exception e) {
-	    response.put("success", false);
-	    response.put("message", e.getMessage()); // Devuelve el mensaje de error específico
-	    return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-	  }
+		Map<String, Object> response = new HashMap<>();
+		try {
+			List<ExerciseModel> exerciseList = exerciseService.ListExercise();
+			response.put("success", true);
+			response.put("data", exerciseList);
+			response.put("message", "Exercises retrieved successfully");
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("success", false);
+			response.put("message", e.getMessage()); // Devuelve el mensaje de error específico
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/apiGymUser/UserInjury")
+	public ResponseEntity<?> ListUserInjury() {
+		Map<String, Object> response = new HashMap<>();
+		try {
+
+			List<UserInjuryModel> ListUserInjury = userInjuryService.ListUserInjury();
+			response.put("success", true);
+			response.put("data", ListUserInjury);
+			response.put("message", "Lesiones obtenidas con exito");
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("success", false);
+			response.put("message", e.getMessage()); // Devuelve el mensaje de error específico
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 }
