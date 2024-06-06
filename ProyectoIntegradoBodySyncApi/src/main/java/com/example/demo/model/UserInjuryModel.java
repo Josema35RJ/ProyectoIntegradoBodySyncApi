@@ -90,4 +90,10 @@ public class UserInjuryModel {
 		this.recoveryDate = recoveryDate;
 	}
 
+	@Override
+	public String toString() {
+		return "UserInjuryModel [id=" + id + ", injuryName=" + injuryName + ", description=" + description
+				+ ", severity=" + severity + ", startDate=" + startDate + ", recoveryDate=" + recoveryDate + "]";
+	}
+
 }

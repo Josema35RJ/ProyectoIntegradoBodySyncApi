@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import com.example.demo.converter.GymUserConverter;
 import com.example.demo.converter.UserInjuryConverter;
 import com.example.demo.entity.UserInjury;
-import com.example.demo.model.GymUserModel;
 import com.example.demo.model.UserInjuryModel;
 import com.example.demo.repository.UserInjuryRepository;
+import com.example.demo.repository.UserInjuryStatusRepository;
 import com.example.demo.service.UserInjuryService;
 
 @Service("userInjuryService")
@@ -29,8 +29,10 @@ public class UserInjuryServiceImpl implements UserInjuryService{
 	@Autowired
 	@Qualifier("gymUserConverter")
 	private GymUserConverter gymUserConverter;
-
 	
+	@Autowired
+	@Qualifier("userInjuryStatusRepository")
+	private UserInjuryStatusRepository userInjuryStatusRepository;
 
 	@Override
 	public List<UserInjuryModel> ListUserInjury() {
@@ -41,8 +43,4 @@ public class UserInjuryServiceImpl implements UserInjuryService{
 		}
 		return l;
 	}
-
-	
-
-
 }

@@ -18,13 +18,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entity.UserInjury;
 import com.example.demo.model.ExerciseModel;
 import com.example.demo.model.GymClassModel;
 import com.example.demo.model.GymUserModel;
 import com.example.demo.model.NutritionPlanModel;
 import com.example.demo.model.RoutineModel;
-import com.example.demo.model.UserInjuryModel;
+import com.example.demo.model.UserInjuryStatusModel;
 import com.example.demo.model.WorkoutModel;
 import com.example.demo.service.ExerciseService;
 import com.example.demo.service.GymClassService;
@@ -32,6 +31,7 @@ import com.example.demo.service.GymUserService;
 import com.example.demo.service.NutritionPlanService;
 import com.example.demo.service.RoutineService;
 import com.example.demo.service.UserInjuryService;
+import com.example.demo.service.UserInjuryStatusService;
 import com.example.demo.service.WorkoutService;
 
 @RestController
@@ -52,6 +52,12 @@ public class RestApiController {
 	@Autowired
 	@Qualifier("workoutService")
 	private WorkoutService workoutService;
+	
+	
+	@Autowired
+	@Qualifier("userInjuryStatusService")
+	private UserInjuryStatusService userInjuryStatusService;
+	
 	
 	@Autowired
 	@Qualifier("exerciseService")
@@ -92,7 +98,8 @@ public class RestApiController {
 	public ResponseEntity<?> ListGymUser( Principal principal) {
 		Map<String, Object> response = new HashMap<>();
 		try {
-			
+			// Comprobar si el usuario autenticado es el mismo que el idAlumno
+					
 			List<GymUserModel> listGymUser = gymUserService.ListAllGymUsers();
 
 			response.put("success", true);
@@ -295,13 +302,14 @@ public class RestApiController {
         return countUsers;
     }
 	
-	@GetMapping("/apiGymUser/UserInjury")
-	public ResponseEntity<?> ListUserInjury() {
+	@GetMapping("/apiGymUser/UserInjuryStatus/{id}")
+	public ResponseEntity<?> ListUserInjuryStatus(@PathVariable int id) {
 		Map<String, Object> response = new HashMap<>();
 		try {
-			
-			List<UserInjuryModel> ListUserInjury = userInjuryService.ListUserInjury();
-			response.put("data", ListUserInjury);
+
+			List<UserInjuryStatusModel> ListUserInjuryStatusInjury = userInjuryStatusService
+					.listUserInjuryStatusModelByGymUser(gymUserService.getGymUserById(id));
+			response.put("data", ListUserInjuryStatusInjury);
 			response.put("message", "Lesiones obtenidas con exito");
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
