@@ -330,7 +330,6 @@ public class RestApiController {
 				response.put("message", "No tienes permiso ");
 				return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
 			}
-            System.out.println((Integer) requestBody.get("gymUserId"));
 			Integer gymUserId = (Integer) requestBody.get("gymUserId");
 			Integer userInjuryId = (Integer) requestBody.get("userInjuryId");
 			boolean isActive = (boolean) requestBody.get("isActive");
@@ -348,8 +347,10 @@ public class RestApiController {
 	}
 	
 	@PutMapping("/apiGymUser/updateUserInjuryStatus/{id}")
-	public ResponseEntity<?> updateUserInjuryStatus(@PathVariable int id, Principal principal, 
+	public ResponseEntity<?> updateUserInjuryStatus(@PathVariable Integer id, Principal principal, 
 	        @RequestBody Map<String, Object> requestBody) {
+		System.out.println(id);
+		System.out.println(requestBody);
 	    Map<String, Object> response = new HashMap<>();
 	    try {
 	        // Comprobar si el usuario autenticado es el mismo que el instructor de la clase
@@ -364,7 +365,7 @@ public class RestApiController {
 
 	        // Llamar al servicio para actualizar el estado de lesión del usuario
 	        userInjuryStatusService.updateUserInjuryStatus(userInjuryStatusId, isActive);
-
+	    	response.put("success", true);
 	        response.put("message", "Estado de lesión actualizado con éxito");
 	        return new ResponseEntity<>(response, HttpStatus.OK);
 	    } catch (Exception e) {
