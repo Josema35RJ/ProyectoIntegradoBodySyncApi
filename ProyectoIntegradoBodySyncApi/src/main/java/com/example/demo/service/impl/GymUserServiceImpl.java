@@ -291,4 +291,5 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 	        userInjuryStatus.activate(); // Optional: if you want to immediately activate the injury
 	        userInjuryStatusRepository.save(userInjuryStatus);
 	    }
+
 }

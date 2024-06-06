@@ -87,6 +87,25 @@ public class RestApiController {
 			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	@GetMapping("/apiGymUser/ListGymUser")
+	public ResponseEntity<?> ListGymUser( Principal principal) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			
+			List<GymUserModel> listGymUser = gymUserService.ListAllGymUsers();
+
+			response.put("success", true);
+			response.put("data", listGymUser);
+			response.put("message", "Usuarios obtenidos con exito");
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("success", false);
+			response.put("message", e);
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 
 	@GetMapping("/apiGymInstructor/getClases/{id}")
 	public ResponseEntity<?> ListClasesGymInstructor(@PathVariable int id, Principal principal) {
