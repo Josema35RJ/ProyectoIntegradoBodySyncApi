@@ -325,12 +325,12 @@ public class RestApiController {
 		Map<String, Object> response = new HashMap<>();
 		try {
 			// Comprobar si el usuario autenticado es el mismo que el idAlumno
-			if (!principal.getName().equals(gymClassService.getClassById(id).getInstructor().getUsername())) {
+			if (!principal.getName().equals(gymUserService.getGymUserById(id).getUsername())) {
 				response.put("success", false);
 				response.put("message", "No tienes permiso ");
 				return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
 			}
-
+            System.out.println((Integer) requestBody.get("gymUserId"));
 			Integer gymUserId = (Integer) requestBody.get("gymUserId");
 			Integer userInjuryId = (Integer) requestBody.get("userInjuryId");
 			boolean isActive = (boolean) requestBody.get("isActive");
@@ -353,7 +353,7 @@ public class RestApiController {
 	    Map<String, Object> response = new HashMap<>();
 	    try {
 	        // Comprobar si el usuario autenticado es el mismo que el instructor de la clase
-	        if (!principal.getName().equals(gymClassService.getClassById(id).getInstructor().getUsername())) {
+	        if (!principal.getName().equals(gymUserService.getGymUserById(id).getUsername())) {
 	            response.put("success", false);
 	            response.put("message", "No tienes permiso ");
 	            return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
