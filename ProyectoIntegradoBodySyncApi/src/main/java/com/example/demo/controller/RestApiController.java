@@ -348,7 +348,7 @@ public class RestApiController {
 	}
 	
 	@PutMapping("/apiGymUser/updateUserInjuryStatus/{id}")
-	public ResponseEntity<?> updateUserInjuryStatus(@PathVariable int id, Principal principal,
+	public ResponseEntity<?> updateUserInjuryStatus(@PathVariable int id, Principal principal, 
 	        @RequestBody Map<String, Object> requestBody) {
 	    Map<String, Object> response = new HashMap<>();
 	    try {
@@ -359,12 +359,11 @@ public class RestApiController {
 	            return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
 	        }
 
-	        Integer gymUserId = (Integer) requestBody.get("gymUserId");
-	        Integer userInjuryId = (Integer) requestBody.get("userInjuryId");
+	        Integer userInjuryStatusId = (Integer) requestBody.get("UserInjuryStatusId");
 	        boolean isActive = (boolean) requestBody.get("isActive");
 
 	        // Llamar al servicio para actualizar el estado de lesión del usuario
-	        userInjuryStatusService.updateUserInjuryStatus(gymUserId, userInjuryId, isActive);
+	        userInjuryStatusService.updateUserInjuryStatus(userInjuryStatusId, isActive);
 
 	        response.put("message", "Estado de lesión actualizado con éxito");
 	        return new ResponseEntity<>(response, HttpStatus.OK);

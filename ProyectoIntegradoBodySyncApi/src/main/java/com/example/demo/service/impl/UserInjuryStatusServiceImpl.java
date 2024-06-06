@@ -81,11 +81,9 @@ public class UserInjuryStatusServiceImpl implements UserInjuryStatusService{
 	}
 	
     @Override
-    public void updateUserInjuryStatus(Integer gymUserId, Integer userInjuryId, boolean isActive) {
+    public void updateUserInjuryStatus(Integer userInjuryId, boolean isActive) {
         // Buscar el estado de lesión del usuario por su ID
-        UserInjuryStatus userInjuryStatus = userInjuryStatusRepository.findById(gymUserId)
-                                            .orElseThrow(() -> new RuntimeException("Estado de lesión del usuario no encontrado"));
-
+        UserInjuryStatus userInjuryStatus = userInjuryStatusRepository.findById(userInjuryId).get();
         // Actualizar el estado de lesión del usuario
         userInjuryStatus.setActive(isActive);
 
