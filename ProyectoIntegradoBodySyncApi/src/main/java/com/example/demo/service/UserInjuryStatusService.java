@@ -7,7 +7,8 @@ import com.example.demo.model.UserInjuryStatusModel;
 
 public interface UserInjuryStatusService {
     List<UserInjuryStatusModel> listUserInjuryStatus();
-    void addUserInjuryStatus(UserInjuryStatusModel UserInjuryStatus);
+ 
     List<UserInjuryStatusModel> listUserInjuryStatusModelByGymUser(GymUserModel gymUser);
+	void addUserInjuryStatus(Integer gymUserId, Integer userInjuryId, boolean isActive);
 }
 

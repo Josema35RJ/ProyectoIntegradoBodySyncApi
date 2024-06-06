@@ -43,4 +43,11 @@ public class UserInjuryServiceImpl implements UserInjuryService{
 		}
 		return l;
 	}
+
+	@Override
+	public UserInjuryModel getUserInjuryById(Integer userInjuryId) {
+		// TODO Auto-generated method stub
+		 
+		return userInjuryConverter.transform(userInjuryRepository.findById(userInjuryId).get());
+	}
 }

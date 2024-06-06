@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.entity.UserInjuryStatus;
 import com.example.demo.model.ExerciseModel;
 import com.example.demo.model.GymClassModel;
 import com.example.demo.model.GymUserModel;
@@ -309,8 +310,36 @@ public class RestApiController {
 
 			List<UserInjuryStatusModel> ListUserInjuryStatusInjury = userInjuryStatusService
 					.listUserInjuryStatusModelByGymUser(gymUserService.getGymUserById(id));
+			response.put("success", true);
 			response.put("data", ListUserInjuryStatusInjury);
 			response.put("message", "Lesiones obtenidas con exito");
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("success", false);
+			response.put("message", e);
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/apiGymUser/addUserInjuryStatus/{id}")
+	public ResponseEntity<?> addUserInjuryStatus(@PathVariable int id, Principal principal, @RequestBody Map<String, Object> requestBody) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			// Comprobar si el usuario autenticado es el mismo que el idAlumno
+						if (!principal.getName().equals(gymClassService.getClassById(id).getInstructor().getUsername())) {
+							response.put("success", false);
+							response.put("message", "No tienes permiso ");
+							return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+						}
+						
+						Integer gymUserId = (Integer) requestBody.get("gymUserId");
+				        Integer userInjuryId = (Integer) requestBody.get("userInjuryId");
+				        boolean isActive = (boolean) requestBody.get("isActive");
+				        
+				        // Llamar al servicio para añadir el estado de lesión del usuario
+				        userInjuryStatusService.addUserInjuryStatus(gymUserId, userInjuryId, isActive);
+	
+			response.put("message", "Lesion añadida con exito");
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.put("success", false);

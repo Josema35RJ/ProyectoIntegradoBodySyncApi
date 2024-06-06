@@ -9,4 +9,6 @@ public interface UserInjuryService {
 
 	 List<UserInjuryModel> ListUserInjury ();
 
+	UserInjuryModel getUserInjuryById(Integer userInjuryId);
+
 }
