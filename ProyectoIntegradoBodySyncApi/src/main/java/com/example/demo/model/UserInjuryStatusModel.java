@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import com.example.demo.entity.GymUser;
 import com.example.demo.entity.UserInjury;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -28,7 +29,7 @@ public class UserInjuryStatusModel {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    
+    @JsonBackReference
     private GymUser gymUser;
 
     @ManyToOne
