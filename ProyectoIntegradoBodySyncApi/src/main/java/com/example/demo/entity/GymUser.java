@@ -214,6 +214,7 @@ public class GymUser {
     // Lista de registros de dolor muscular del usuario.
     @OneToMany()
     @ToString.Exclude
+    
     private List<MusclePainLog> musclePainLogs = new ArrayList<>();
 
     // Asistencia del usuario.

@@ -2,17 +2,14 @@ package com.example.demo.model;
 
 import java.time.LocalDateTime;
 
-import com.example.demo.entity.GymUser;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 public class MealLogModel {
 	// Identificador único para cada registro de comida.
@@ -21,9 +18,9 @@ public class MealLogModel {
 		private Integer id;
 
 		// Usuario que ha hecho el registro de comida.
+		@JsonIgnore
 		@ManyToOne
-		@NotNull(message = "GymUser is required")
-		@JsonBackReference
+		@JoinColumn(name = "gym_user_id") 
 		private GymUserModel gymUser;
 
 		// Fecha de la comida.
@@ -34,6 +31,51 @@ public class MealLogModel {
 		private String mealDescription;
 
 		// Calorías consumidas en la comida.
-		@Min(value = 0, message = "Calories consumed must be a non-negative number")
 		private Integer caloriesConsumed;
+
+		public Integer getId() {
+			return id;
+		}
+
+		public void setId(Integer id) {
+			this.id = id;
+		}
+
+		public GymUserModel getGymUser() {
+			return gymUser;
+		}
+
+		public void setGymUser(GymUserModel gymUser) {
+			this.gymUser = gymUser;
+		}
+
+		public LocalDateTime getMealDate() {
+			return mealDate;
+		}
+
+		public void setMealDate(LocalDateTime mealDate) {
+			this.mealDate = mealDate;
+		}
+
+		public String getMealDescription() {
+			return mealDescription;
+		}
+
+		public void setMealDescription(String mealDescription) {
+			this.mealDescription = mealDescription;
+		}
+
+		public Integer getCaloriesConsumed() {
+			return caloriesConsumed;
+		}
+
+		public void setCaloriesConsumed(Integer caloriesConsumed) {
+			this.caloriesConsumed = caloriesConsumed;
+		}
+
+		@Override
+		public String toString() {
+			return "MealLogModel [id=" + id + ", gymUser=" + gymUser + ", mealDate=" + mealDate + ", mealDescription="
+					+ mealDescription + ", caloriesConsumed=" + caloriesConsumed + "]";
+		}
 }

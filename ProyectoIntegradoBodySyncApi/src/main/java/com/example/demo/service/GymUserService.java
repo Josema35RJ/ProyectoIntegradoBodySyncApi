@@ -33,4 +33,5 @@ public interface GymUserService {
 	void updateClassUser(GymUserModel gymUser, GymClassModel c);
 	void addInjuryToUser(GymUserModel user, Integer injuryId);
 	void updateUserInjury(GymUserModel gymUser, int userInjuryId);
+	void addMealLog(GymUserModel gymUserById, Integer userMealLogId);
 }

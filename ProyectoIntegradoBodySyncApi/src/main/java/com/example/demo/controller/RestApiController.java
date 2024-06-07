@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.model.ExerciseModel;
 import com.example.demo.model.GymClassModel;
 import com.example.demo.model.GymUserModel;
+import com.example.demo.model.MealLogModel;
 import com.example.demo.model.NutritionPlanModel;
 import com.example.demo.model.RoutineModel;
 import com.example.demo.model.UserInjuryModel;
@@ -29,6 +30,7 @@ import com.example.demo.model.WorkoutModel;
 import com.example.demo.service.ExerciseService;
 import com.example.demo.service.GymClassService;
 import com.example.demo.service.GymUserService;
+import com.example.demo.service.MealLogService;
 import com.example.demo.service.NutritionPlanService;
 import com.example.demo.service.RoutineService;
 import com.example.demo.service.UserInjuryService;
@@ -45,6 +47,10 @@ public class RestApiController {
 	@Autowired
 	@Qualifier("gymClassService")
 	private GymClassService gymClassService;
+	
+	@Autowired
+	@Qualifier("mealLogService")
+	private MealLogService mealLogService;
 
 	@Autowired
 	@Qualifier("nutritionPlanService")
@@ -346,11 +352,29 @@ public class RestApiController {
 		}
 	}
 	
-	@PutMapping("/apiGymUser/updateUserInjuryStatus/{id}")
+	@PostMapping("/apiGymUser/addMealLog/{id}")
+	public ResponseEntity<?> addMealLog(@PathVariable int id, Principal principal, @RequestBody Map<String, Integer> requestBody) {
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+
+	        Integer gymUserId = (Integer) requestBody.get("gymUserId");
+			Integer userMealLogId = (Integer) requestBody.get("mealLogId");
+			
+			gymUserService.addMealLog(gymUserService.getGymUserById(gymUserId), userMealLogId);
+
+	        response.put("success", true);
+	        response.put("message", "Comida añadida con éxito");
+	        return new ResponseEntity<>(response, HttpStatus.OK);
+	    } catch (Exception e) {
+	        response.put("success", false);
+	        response.put("message", e.getMessage());
+	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
+	
+	@PostMapping("/apiGymUser/updateUserInjuryStatus/{id}")
 	public ResponseEntity<?> updateUserInjuryStatus(@PathVariable Integer id, Principal principal, 
 	        @RequestBody Map<String, Object> requestBody) {
-		System.out.println(id);
-		System.out.println(requestBody);
 	    Map<String, Object> response = new HashMap<>();
 	    try {
 	        // Comprobar si el usuario autenticado es el mismo que el instructor de la clase
@@ -374,7 +398,6 @@ public class RestApiController {
 	        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	}
-
 
 	@PutMapping("/apiGymUser/updateAttendanceDays/{id}")
 	public ResponseEntity<?> updateAttendanceDays(@PathVariable int id, @RequestBody Set<Date> attendanceDays,
@@ -406,6 +429,22 @@ public class RestApiController {
 			response.put("success", true);
 			response.put("data", exerciseList);
 			response.put("message", "Exercises retrieved successfully");
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("success", false);
+			response.put("message", e.getMessage()); // Devuelve el mensaje de error específico
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@GetMapping("/apiGymUser/MealLog")
+	public ResponseEntity<?> listMealLog() {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			List<MealLogModel> mealLogList = mealLogService.listMealLog();
+			response.put("success", true);
+			response.put("data", mealLogList);
+			response.put("message", "MealLog retrieved successfully");
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.put("success", false);

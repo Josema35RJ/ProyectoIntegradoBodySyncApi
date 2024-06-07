@@ -32,6 +32,7 @@ import com.example.demo.entity.UserInjuryStatus;
 import com.example.demo.model.GymClassModel;
 import com.example.demo.model.GymUserModel;
 import com.example.demo.repository.GymUserRepository;
+import com.example.demo.repository.MealLogRepository;
 import com.example.demo.repository.UserInjuryRepository;
 import com.example.demo.repository.UserInjuryStatusRepository;
 import com.example.demo.security.CustomUserDetails;
@@ -43,6 +44,10 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 	@Autowired
 	@Qualifier("gymUserRepository")
 	private GymUserRepository gymUserRepository;
+	
+	@Autowired
+	@Qualifier("mealLogRepository")
+	private MealLogRepository mealLogRepository;
 	
 	@Autowired
 	@Qualifier("userInjuryRepository")
@@ -291,5 +296,17 @@ public class GymUserServiceImpl implements UserDetailsService, GymUserService {
 	        userInjuryStatus.activate(); // Optional: if you want to immediately activate the injury
 	        userInjuryStatusRepository.save(userInjuryStatus);
 	    }
+
+	    @Override
+	    public void addMealLog(GymUserModel gymUserModel, Integer userMealLogId) {
+
+	       GymUser gymUser= gymUserConverter.transform(gymUserModel);
+	        // Add the meal log to the gym user
+	        gymUser.getMealLogs().add(mealLogRepository.findById(userMealLogId).get());// You need to define this method in the GymUserModel class
+
+	        // Save the updated gym user
+	        gymUserRepository.save(gymUser);
+	    }
+
 
 }

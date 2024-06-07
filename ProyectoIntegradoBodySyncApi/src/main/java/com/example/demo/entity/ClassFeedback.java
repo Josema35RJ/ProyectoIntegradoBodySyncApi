@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +22,7 @@ public class ClassFeedback {
 
     @ManyToOne
     @NotNull(message = "GymUser is required")
+	@JsonManagedReference
     private GymUser gymUser;
 
     @ManyToOne
