@@ -4,12 +4,12 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -21,11 +21,16 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@Component
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
     private final String HEADER = "Authorization";
     private final String PREFIX = "Bearer ";
     private final String SECRET = "mySecretKey";
+
+    @Value("${jwt.expirationTimeInMillis}")
+    private long expirationTimeInMillis = 3_600_000; // 1 hora
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
@@ -33,7 +38,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             if (existeJWTToken(request, response)) {
                 Claims claims = validateToken(request);
                 if (claims.get("authorities") != null) {
-                    setUpSpringAuthentication(claims,request);
+                    setUpSpringAuthentication(claims, request);
                 } else {
                     SecurityContextHolder.clearContext();
                 }
@@ -46,7 +51,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             ((HttpServletResponse) response).sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
             return;
         }
-    }   
+    }
 
     private Claims validateToken(HttpServletRequest request) {
         String jwtToken = request.getHeader(HEADER).replace(PREFIX, "");
@@ -59,7 +64,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
         List<SimpleGrantedAuthority> grantedAuthorities = authorities.stream()
                 .map(role -> {
-                   if (role.equals("ROL_ADMIN") && !request.getRequestURI().startsWith("/api/Admin/")) {
+                    if (role.equals("ROL_ADMIN") && !request.getRequestURI().startsWith("/api/Admin/")) {
                         return null;
                     }
                     return new SimpleGrantedAuthority(role);
@@ -78,8 +83,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
         return true;
     }
 
-
-    public String generateToken(String username, long expirationTimeInMillis) {
+    public String generateToken(String username) {
         Date expirationDate = new Date(System.currentTimeMillis() + expirationTimeInMillis);
         return Jwts.builder()
             .setSubject(username)
