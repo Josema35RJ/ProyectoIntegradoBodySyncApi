@@ -27,6 +27,7 @@ import com.example.demo.model.RoutineModel;
 import com.example.demo.model.UserInjuryModel;
 import com.example.demo.model.UserInjuryStatusModel;
 import com.example.demo.model.WorkoutModel;
+import com.example.demo.service.ClassFeedbackService;
 import com.example.demo.service.ExerciseService;
 import com.example.demo.service.GymClassService;
 import com.example.demo.service.GymUserService;
@@ -55,6 +56,10 @@ public class RestApiController {
 	@Autowired
 	@Qualifier("nutritionPlanService")
 	private NutritionPlanService nutritionPlanService;
+
+	@Autowired
+	@Qualifier("classFeedbackService")
+	private ClassFeedbackService classFeedbackService;
 
 	@Autowired
 	@Qualifier("workoutService")
@@ -344,6 +349,33 @@ public class RestApiController {
 			userInjuryStatusService.addUserInjuryStatus(gymUserId, userInjuryId, isActive);
 
 			response.put("message", "Lesion añadida con exito");
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+			response.put("success", false);
+			response.put("message", e);
+			return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping("/apiGymUser/addUserFeedback/{id}")
+	public ResponseEntity<?> addUserFeedback(@PathVariable int id, Principal principal,
+			@RequestBody Map<String, Object> requestBody) {
+		Map<String, Object> response = new HashMap<>();
+		try {
+			// Comprobar si el usuario autenticado es el mismo que el idAlumno
+			if (!principal.getName().equals(gymUserService.getGymUserById(id).getUsername())) {
+				response.put("success", false);
+				response.put("message", "No tienes permiso ");
+				return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+			}
+	
+			Integer gymClassId = (Integer) requestBody.get("gymClassId");
+			Integer rating = (Integer) requestBody.get("rating");
+			String comment = (String) requestBody.get("comment");
+			classFeedbackService.addFeedbackUser(id, gymClassId, rating, comment);
+
+			 response.put("success", true);
+			response.put("message", "Feedback añadido con exito");
 			return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 			response.put("success", false);

@@ -44,11 +44,11 @@ public class ClassFeedbackModel {
 
 	@ManyToOne
 	@NotNull(message = "GymUser is required")
-	private GymUser gymUser;
+	private GymUserModel gymUser;
 
 	@ManyToOne
 	@NotNull(message = "GymClass is required")
-	private GymClass gymClass;
+	private GymClassModel gymClass;
 
 	private Integer rating; // e.g. on a scale of 1-5
 
@@ -59,8 +59,8 @@ public class ClassFeedbackModel {
 		super();
 	}
 
-	public ClassFeedbackModel(Integer id, @NotNull(message = "GymUser is required") GymUser gymUser,
-			@NotNull(message = "GymClass is required") GymClass gymClass, Integer rating,
+	public ClassFeedbackModel(Integer id, @NotNull(message = "GymUser is required") GymUserModel gymUser,
+			@NotNull(message = "GymClass is required") GymClassModel gymClass, Integer rating,
 			@NotBlank(message = "Comments are required") String comments) {
 		super();
 		this.id = id;
@@ -78,19 +78,19 @@ public class ClassFeedbackModel {
 		this.id = id;
 	}
 
-	public GymUser getGymUser() {
+	public GymUserModel getGymUser() {
 		return gymUser;
 	}
 
-	public void setGymUser(GymUser gymUser) {
+	public void setGymUser(GymUserModel gymUser) {
 		this.gymUser = gymUser;
 	}
 
-	public GymClass getGymClass() {
+	public GymClassModel getGymClass() {
 		return gymClass;
 	}
 
-	public void setGymClass(GymClass gymClass) {
+	public void setGymClass(GymClassModel gymClass) {
 		this.gymClass = gymClass;
 	}
 
@@ -115,5 +115,4 @@ public class ClassFeedbackModel {
 		return "ClassFeedbackModel [id=" + id + ", gymUser=" + gymUser + ", gymClass=" + gymClass + ", rating=" + rating
 				+ ", comments=" + comments + "]";
 	}
-
 }

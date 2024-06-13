@@ -12,6 +12,8 @@ import com.example.demo.entity.ClassFeedback;
 import com.example.demo.model.ClassFeedbackModel;
 import com.example.demo.repository.ClassFeedbackRepository;
 import com.example.demo.service.ClassFeedbackService;
+import com.example.demo.service.GymClassService;
+import com.example.demo.service.GymUserService;
 
 @Service("classFeedbackService")
 public class ClassFeedbackServiceImpl implements ClassFeedbackService {
@@ -19,6 +21,14 @@ public class ClassFeedbackServiceImpl implements ClassFeedbackService {
 	@Autowired
 	@Qualifier("classFeedbackRepository")
     private ClassFeedbackRepository classFeedbackRepository;
+	
+	@Autowired
+	@Qualifier("gymUserService")
+	private GymUserService gymUserService;
+	
+	@Autowired
+	@Qualifier("gymClassService")
+	private GymClassService gymClassService;
 	
 	@Autowired
 	@Qualifier("classFeedbackConverter")
@@ -37,4 +47,11 @@ public class ClassFeedbackServiceImpl implements ClassFeedbackService {
     public void addFeedback(ClassFeedbackModel feedback) {
         classFeedbackRepository.save(classFeedbackConverter.transform(feedback));
     }
+
+	@Override
+	public void addFeedbackUser(Integer gymUserId, Integer gymClassId, Integer rating, String comment) {
+		// TODO Auto-generated method stub
+		ClassFeedbackModel n = new ClassFeedbackModel(0,gymUserService.getGymUserById(gymUserId), gymClassService.getClassById(gymClassId), rating, comment);
+		 classFeedbackRepository.save(classFeedbackConverter.transform(n));
+	}
 }
